@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
+/* /site's Dumbbells zone: wrap a subtree in .zone-dark to flip it to the dark/bold treatment. */
+@custom-variant zone-dark (&:where(.zone-dark, .zone-dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Unified brand palette — derived from public/branding/logo.png pixel sampling */
+  --color-brand-bg: #f8f7f6;
+  --color-brand-ink: #1a1a1a;
+  --color-brand-pink: #e9c6cf;
+  --color-brand-pink-strong: #c4214b;
+  --color-brand-lavender: #c8b9d6;
+  --color-brand-lavender-strong: #7443a3;
+  --color-brand-mauve: #a39093;
 }
 
 @theme inline {
@@ -10,17 +22,53 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+  --font-bebas: var(--font-bebas-neue);
+  --font-baloo: var(--font-baloo-2);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand-bg: var(--color-brand-bg);
+  --color-brand-ink: var(--color-brand-ink);
+  --color-brand-pink: var(--color-brand-pink);
+  --color-brand-pink-strong: var(--color-brand-pink-strong);
+  --color-brand-lavender: var(--color-brand-lavender);
+  --color-brand-lavender-strong: var(--color-brand-lavender-strong);
+  --color-brand-mauve: var(--color-brand-mauve);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Star.tsx: brief bounce when a star newly fills in (a destination gets discovered). */
+@keyframes star-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-star-pop {
+  animation: star-pop 0.45s ease-out;
+}
+
+/* CelebrationBanner.tsx: soft scale+fade entrance for the "all discovered" celebration. */
+@keyframes celebration-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-celebration-in {
+  animation: celebration-in 0.35s ease-out;
 }
