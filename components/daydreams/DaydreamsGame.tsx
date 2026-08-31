@@ -92,6 +92,15 @@ export function DaydreamsGame({ content }: { content: DaydreamsContent }) {
   }, []);
 
   const paused = gameState.status !== "playing";
+
+  // Without this, a touch still held on the joystick when a panel opens
+  // (nothing else clears it) keeps its last direction live, so the mascot
+  // immediately resumes walking — often straight back into the sensor it
+  // just triggered — the instant the panel closes and play resumes.
+  useEffect(() => {
+    if (paused) releaseJoystick();
+  }, [paused, releaseJoystick]);
+
   const allStarsCollected = gameState.discoveredDestinationIds.length >= destinations.length;
   const showCelebration = allStarsCollected && !celebrationDismissed;
 

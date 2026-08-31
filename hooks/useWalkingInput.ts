@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export type WalkingInput = { x: number; z: number };
 
@@ -62,15 +62,15 @@ export function useWalkingInput() {
   }, []);
 
   /** Called by the on-screen joystick while active; takes over from keyboard input. */
-  function setJoystickVector(x: number, z: number) {
+  const setJoystickVector = useCallback((x: number, z: number) => {
     joystickActiveRef.current = true;
     inputRef.current = { x: Math.max(-1, Math.min(1, x)), z: Math.max(-1, Math.min(1, z)) };
-  }
+  }, []);
 
-  function releaseJoystick() {
+  const releaseJoystick = useCallback(() => {
     joystickActiveRef.current = false;
     inputRef.current = { x: 0, z: 0 };
-  }
+  }, []);
 
   return { inputRef, setJoystickVector, releaseJoystick };
 }

@@ -109,6 +109,18 @@ const STATION_VISUALS: Record<DestinationId, (color: string) => ReactNode> = {
   visit: () => <FurniturePiece url="/models/furniture-kit/doorway.glb" offset={[-0.25, 0, 0.075]} />,
 };
 
+// The sensor box is 2 units on a side (SENSOR_HALF), and closing the panel
+// doesn't move the mascot — it's left parked wherever it was standing,
+// often well inside that box. Walking clear of it again (especially with
+// the mobile joystick's coarser analog input) easily clips back across the
+// boundary once or twice before actually escaping, which — with nothing
+// but the isInside check below — re-opened the same panel instantly on
+// every one of those clips, making the panel feel impossible to leave.
+// REENTER_COOLDOWN_MS suppresses onEnterDestination for a beat after each
+// exit, sliding forward on every subsequent exit, so a player dithering at
+// the edge doesn't get pulled back in until they've actually stayed clear.
+const REENTER_COOLDOWN_MS = 1000;
+
 /**
  * Memoized, and its two collider handlers are stable (useCallback), so
  * this only re-renders when its own props genuinely change (mainly its
@@ -135,11 +147,13 @@ export const DestinationStation = memo(function DestinationStation({
   onEnterDestination: (id: DestinationId) => void;
 }) {
   const isInsideRef = useRef(false);
+  const suppressUntilRef = useRef(0);
 
   const handleIntersectionEnter = useCallback(
     (payload: IntersectionEnterPayload) => {
       if (!isMascot(payload) || isInsideRef.current) return;
       isInsideRef.current = true;
+      if (performance.now() < suppressUntilRef.current) return;
       onEnterDestination(destination.id);
     },
     [onEnterDestination, destination.id],
@@ -148,6 +162,7 @@ export const DestinationStation = memo(function DestinationStation({
   const handleIntersectionExit = useCallback((payload: IntersectionExitPayload) => {
     if (!isMascot(payload)) return;
     isInsideRef.current = false;
+    suppressUntilRef.current = performance.now() + REENTER_COOLDOWN_MS;
   }, []);
 
   return (
