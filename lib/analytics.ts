@@ -8,6 +8,7 @@ export type AnalyticsEvent =
   | DestinationEventName
   | "lead_started"
   | "lead_submitted"
+  | "class_signup_submitted"
   | "all_stars_collected"
   | "voice_agent_opened"
   | "voice_agent_lead_logged";
