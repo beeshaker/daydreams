@@ -53,32 +53,57 @@ export async function getOccurrenceById(id: string): Promise<ClassOccurrence | n
   return occurrences.find((occ) => occ.id === id) ?? null;
 }
 
+export type OccurrenceCandidate = Omit<
+  ClassOccurrence,
+  "id" | "createdAt" | "updatedAt" | "rescheduleHistory" | "status"
+>;
+
 /**
- * Inserts an occurrence generated from a template, deduping on
- * (templateId, date) so re-running generation for the same window never
- * creates duplicates. A `templateId: null` one-off is never deduped here —
- * those are only ever created directly via createManualOccurrence.
+ * Batch-inserts occurrences generated from templates: reads the occurrences
+ * file ONCE, computes which of `candidates` are missing, appends only those,
+ * and writes ONCE — instead of one read-modify-write cycle per candidate.
+ * This is what lets ensureUpcomingOccurrences do a single read + single
+ * write per call regardless of how many (template, date) pairs it covers.
+ *
+ * Dedupes on (templateId, templateDate) — templateDate is the occurrence's
+ * ORIGINAL date, set once at creation and never mutated by
+ * rescheduleOccurrenceInPlace. Using templateDate (not the mutable `date`)
+ * means a rescheduled occurrence still "occupies" its original templated
+ * slot, so the next generation pass won't re-insert a duplicate "ghost"
+ * occurrence at the old date/time. A `templateId: null` candidate is never
+ * deduped/inserted here — one-offs are only ever created directly via
+ * createManualOccurrence.
  */
-export async function insertOccurrenceIfMissing(
-  occ: Omit<ClassOccurrence, "id" | "createdAt" | "updatedAt" | "rescheduleHistory" | "status">,
-): Promise<void> {
+export async function insertOccurrencesIfMissing(candidates: OccurrenceCandidate[]): Promise<void> {
+  if (candidates.length === 0) return;
+
   const occurrences = await readOccurrences();
-  const exists =
-    occ.templateId !== null &&
-    occurrences.some((existing) => existing.templateId === occ.templateId && existing.date === occ.date);
-  if (exists) return;
+  const existingKeys = new Set(
+    occurrences
+      .filter((existing) => existing.templateId !== null)
+      .map((existing) => `${existing.templateId}::${existing.templateDate}`),
+  );
 
   const now = new Date().toISOString();
-  const stored: ClassOccurrence = {
-    ...occ,
-    id: crypto.randomUUID(),
-    status: "scheduled",
-    rescheduleHistory: [],
-    createdAt: now,
-    updatedAt: now,
-  };
-  occurrences.push(stored);
-  await writeOccurrences(occurrences);
+  const seenKeys = new Set<string>();
+  const toInsert: ClassOccurrence[] = [];
+  for (const candidate of candidates) {
+    if (candidate.templateId === null) continue;
+    const key = `${candidate.templateId}::${candidate.templateDate}`;
+    if (existingKeys.has(key) || seenKeys.has(key)) continue;
+    seenKeys.add(key);
+    toInsert.push({
+      ...candidate,
+      id: crypto.randomUUID(),
+      status: "scheduled",
+      rescheduleHistory: [],
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
+
+  if (toInsert.length === 0) return;
+  await writeOccurrences([...occurrences, ...toInsert]);
 }
 
 export async function createManualOccurrence(input: {
@@ -96,6 +121,9 @@ export async function createManualOccurrence(input: {
     ...input,
     id: crypto.randomUUID(),
     templateId: null,
+    // Never deduped (templateId is null), but set for type consistency with
+    // templated occurrences — see ClassOccurrence.templateDate.
+    templateDate: input.date,
     status: "scheduled",
     rescheduleHistory: [],
     createdAt: now,

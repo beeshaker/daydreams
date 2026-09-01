@@ -27,7 +27,14 @@ export type ClassOccurrence = {
   zone: Zone;
   title: string;
   description?: string;
-  date: string; // "YYYY-MM-DD"
+  date: string; // "YYYY-MM-DD" — the occurrence's CURRENT date, mutated by reschedules
+  // The occurrence's original date, set once at creation and NEVER mutated by
+  // rescheduleOccurrenceInPlace. This is the immutable half of the dedupe key
+  // ((templateId, templateDate)) that insertOccurrencesIfMissing uses to
+  // recognize "this templated slot already has an occurrence" even after a
+  // reschedule has moved `date` away from it — otherwise the next generation
+  // pass would re-insert a duplicate "ghost" occurrence at the old date.
+  templateDate: string; // "YYYY-MM-DD"
   startTime: string;
   endTime: string;
   capacity: number | null;
