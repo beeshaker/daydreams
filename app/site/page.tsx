@@ -97,8 +97,12 @@ export default async function SitePage() {
   // ensureUpcomingOccurrences, and that store does an unsynchronized
   // read-modify-write, so running them concurrently risks one write
   // clobbering the other.
-  const gymOccurrences = await getOccurrencesWithCounts("gym");
-  const daycareOccurrences = await getOccurrencesWithCounts("daycare");
+  // limitDays: 7 bounds what the PUBLIC page displays to a one-week window —
+  // occurrences are still generated 21 days out (ensureUpcomingOccurrences'
+  // default, unaffected by this option); the admin page fetches without
+  // limitDays so it keeps showing the full window for planning ahead.
+  const gymOccurrences = await getOccurrencesWithCounts("gym", { limitDays: 7 });
+  const daycareOccurrences = await getOccurrencesWithCounts("daycare", { limitDays: 7 });
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-ink">
