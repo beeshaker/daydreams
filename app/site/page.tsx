@@ -6,19 +6,23 @@ import {
   getTestimonials,
   getGallery,
   getSchedule,
+  getFirstTimerSteps,
   getSiteSettings,
   getGymClasses,
   getTrainers,
-  getGymSchedule,
   getGymGallery,
   getGymTestimonials,
+  getGymFirstTimerSteps,
   getGymSiteSettings,
 } from "@/lib/daydreams/content";
+import { getOccurrencesWithCounts } from "@/lib/classes/queries";
 import { ProgramsSection } from "@/components/daydreams/sections/ProgramsSection";
 import { StaffSection } from "@/components/daydreams/sections/StaffSection";
 import { ScheduleSection } from "@/components/daydreams/sections/ScheduleSection";
+import { ClassScheduleSection } from "@/components/daydreams/sections/ClassScheduleSection";
 import { GallerySection } from "@/components/daydreams/sections/GallerySection";
 import { TestimonialsSection } from "@/components/daydreams/sections/TestimonialsSection";
+import { FirstTimerSection } from "@/components/daydreams/sections/FirstTimerSection";
 import { BookAVisitForm } from "@/components/daydreams/BookAVisitForm";
 import { BookASessionForm } from "@/components/dumbbells/BookASessionForm";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -29,12 +33,20 @@ export const metadata = {
   description: "A gym and a daycare, under one roof — see both sides in one place.",
 };
 
+// Class occurrences and sign-up counts are live, mutable data (new sign-ups,
+// admin cancellations/reschedules) read straight from the filesystem store —
+// nothing here uses a Next.js "dynamic API", so without this the route would
+// otherwise be statically prerendered once at build time and never reflect
+// real sign-ups, which defeats router.refresh() after a sign-up.
+export const dynamic = "force-dynamic";
+
 const dumbbellsSections = [
   { id: "classes", label: "Classes" },
   { id: "trainers", label: "Trainers" },
   { id: "dumbbells-schedule", label: "Class Schedule" },
   { id: "dumbbells-gallery", label: "Gallery" },
   { id: "dumbbells-testimonials", label: "Members Say" },
+  { id: "dumbbells-first-timers", label: "First Timers" },
   { id: "join", label: "Join Us" },
 ];
 
@@ -42,8 +54,10 @@ const daydreamsSections = [
   { id: "programs", label: "Programs" },
   { id: "staff", label: "Meet the Teachers" },
   { id: "schedule", label: "Our Day" },
+  { id: "sessions", label: "Book a Session" },
   { id: "gallery", label: "Gallery" },
   { id: "testimonials", label: "Parents Say" },
+  { id: "first-timers", label: "First Timers" },
   { id: "visit", label: "Book a Visit" },
 ];
 
@@ -54,12 +68,13 @@ export default async function SitePage() {
     schedule,
     gallery,
     testimonials,
+    firstTimerSteps,
     siteSettings,
     gymClasses,
     trainers,
-    gymSchedule,
     gymGallery,
     gymTestimonials,
+    gymFirstTimerSteps,
     gymSiteSettings,
   ] = await Promise.all([
     getPrograms(),
@@ -67,14 +82,27 @@ export default async function SitePage() {
     getSchedule(),
     getGallery(),
     getTestimonials(),
+    getFirstTimerSteps(),
     getSiteSettings(),
     getGymClasses(),
     getTrainers(),
-    getGymSchedule(),
     getGymGallery(),
     getGymTestimonials(),
+    getGymFirstTimerSteps(),
     getGymSiteSettings(),
   ]);
+
+  // Awaited sequentially (not inside the Promise.all above): both calls can
+  // write to the same .data/class-occurrences.json file via
+  // ensureUpcomingOccurrences, and that store does an unsynchronized
+  // read-modify-write, so running them concurrently risks one write
+  // clobbering the other.
+  // limitDays: 7 bounds what the PUBLIC page displays to a one-week window —
+  // occurrences are still generated 21 days out (ensureUpcomingOccurrences'
+  // default, unaffected by this option); the admin page fetches without
+  // limitDays so it keeps showing the full window for planning ahead.
+  const gymOccurrences = await getOccurrencesWithCounts("gym", { limitDays: 7 });
+  const daycareOccurrences = await getOccurrencesWithCounts("daycare", { limitDays: 7 });
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-ink">
@@ -176,8 +204,8 @@ export default async function SitePage() {
 
               <section id="dumbbells-schedule" className="scroll-mt-24">
                 <h3 className="font-bebas text-3xl uppercase tracking-wide">Class Schedule</h3>
-                <div className="mt-5 max-w-md">
-                  <ScheduleSection schedule={gymSchedule} />
+                <div className="mt-5 max-w-2xl">
+                  <ClassScheduleSection occurrences={gymOccurrences} />
                 </div>
               </section>
 
@@ -192,6 +220,20 @@ export default async function SitePage() {
                 <h3 className="font-bebas text-3xl uppercase tracking-wide">Members Say</h3>
                 <div className="mt-5">
                   <TestimonialsSection testimonials={gymTestimonials} />
+                </div>
+              </section>
+
+              <section id="dumbbells-first-timers" className="scroll-mt-24">
+                <h3 className="font-bebas text-3xl uppercase tracking-wide">First Timers</h3>
+                <p className="mt-2 text-sm text-white/60">
+                  New around here? Here&apos;s how to get started — then check{" "}
+                  <a href="#dumbbells-schedule" className="font-semibold text-brand-lavender underline">
+                    this week&apos;s class schedule
+                  </a>{" "}
+                  to book your first spot.
+                </p>
+                <div className="mt-5">
+                  <FirstTimerSection steps={gymFirstTimerSteps} />
                 </div>
               </section>
 
@@ -258,6 +300,13 @@ export default async function SitePage() {
                 </div>
               </section>
 
+              <section id="sessions" className="scroll-mt-24">
+                <h3 className="font-baloo text-2xl text-brand-ink">Book a Session</h3>
+                <div className="mt-5 max-w-2xl">
+                  <ClassScheduleSection occurrences={daycareOccurrences} />
+                </div>
+              </section>
+
               <section id="gallery" className="scroll-mt-24">
                 <h3 className="font-baloo text-2xl text-brand-ink">Gallery</h3>
                 <div className="mt-5">
@@ -269,6 +318,20 @@ export default async function SitePage() {
                 <h3 className="font-baloo text-2xl text-brand-ink">Parents Say</h3>
                 <div className="mt-5">
                   <TestimonialsSection testimonials={testimonials} />
+                </div>
+              </section>
+
+              <section id="first-timers" className="scroll-mt-24">
+                <h3 className="font-baloo text-2xl text-brand-ink">First Timers</h3>
+                <p className="mt-2 text-sm text-brand-ink/70">
+                  New to Daydreams? Here&apos;s how a first visit works — then check{" "}
+                  <a href="#sessions" className="font-semibold text-brand-lavender-strong underline">
+                    upcoming sessions
+                  </a>{" "}
+                  to book a spot.
+                </p>
+                <div className="mt-5">
+                  <FirstTimerSection steps={firstTimerSteps} />
                 </div>
               </section>
 

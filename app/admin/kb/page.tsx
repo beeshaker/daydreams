@@ -27,6 +27,9 @@ export default async function AdminKbPage() {
             <Link href="/admin/leads" className="text-brand-lavender-strong underline">
               Leads
             </Link>
+            <Link href="/admin/classes" className="text-brand-lavender-strong underline">
+              Classes
+            </Link>
             <Link
               href="/admin/kb/new"
               className="rounded-md bg-brand-pink-strong px-3 py-1.5 font-semibold text-white hover:brightness-95"
