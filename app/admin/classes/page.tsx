@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { getOccurrencesWithCounts } from "@/lib/classes/queries";
+import { todayDateString } from "@/lib/classes/dates";
 import type { OccurrenceStatus, Zone } from "@/lib/classes/types";
 import { createManualOccurrenceAction, bulkUploadOccurrencesAction } from "./actions";
+import { StatusBadge, ZoneBadge } from "@/components/admin/ClassBadges";
+import { ClassCalendar, type CalendarRange } from "@/components/admin/ClassCalendar";
 
 export const metadata = {
   title: "Admin — Classes",
@@ -9,6 +12,8 @@ export const metadata = {
 
 const ZONES: Zone[] = ["gym", "daycare"];
 const STATUSES: OccurrenceStatus[] = ["scheduled", "confirmed", "cancelled", "rescheduled"];
+const VIEWS = ["list", "calendar"] as const;
+const RANGES: CalendarRange[] = ["day", "week", "month"];
 
 function isZone(value: string | string[] | undefined): value is Zone {
   return typeof value === "string" && (ZONES as string[]).includes(value);
@@ -18,27 +23,16 @@ function isOccurrenceStatus(value: string | string[] | undefined): value is Occu
   return typeof value === "string" && (STATUSES as string[]).includes(value);
 }
 
-const STATUS_STYLES: Record<OccurrenceStatus, string> = {
-  scheduled: "bg-brand-ink/10 text-brand-ink/70",
-  confirmed: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
-  rescheduled: "bg-amber-100 text-amber-700",
-};
-
-function StatusBadge({ status }: { status: OccurrenceStatus }) {
-  return (
-    <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[status]}`}>
-      {status}
-    </span>
-  );
+function isView(value: string | undefined): value is (typeof VIEWS)[number] {
+  return typeof value === "string" && (VIEWS as readonly string[]).includes(value);
 }
 
-function ZoneBadge({ zone }: { zone: Zone }) {
-  return (
-    <span className="shrink-0 rounded-full bg-brand-lavender/30 px-2.5 py-1 text-xs font-semibold text-brand-lavender-strong">
-      {zone === "gym" ? "Gym" : "Daycare"}
-    </span>
-  );
+function isCalendarRange(value: string | undefined): value is CalendarRange {
+  return typeof value === "string" && (RANGES as string[]).includes(value);
+}
+
+function isDateString(value: string | undefined): value is string {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
 function firstParam(value: string | string[] | undefined): string | undefined {
@@ -55,6 +49,25 @@ export default async function AdminClassesPage(props: PageProps<"/admin/classes"
   const uploadSkipped = firstParam(searchParams.uploadSkipped);
   const uploadErrors = firstParam(searchParams.uploadErrors);
   const showUploadResult = uploadCreated !== undefined;
+
+  const viewParam = firstParam(searchParams.view);
+  const view = isView(viewParam) ? viewParam : "list";
+  const rangeParam = firstParam(searchParams.range);
+  const range: CalendarRange = isCalendarRange(rangeParam) ? rangeParam : "month";
+  const dateParam = firstParam(searchParams.date);
+  const anchorDate = isDateString(dateParam) ? dateParam : todayDateString();
+
+  function viewHref(targetView: (typeof VIEWS)[number]): string {
+    const params = new URLSearchParams();
+    if (zoneParam) params.set("zone", zoneParam);
+    if (statusParam) params.set("status", statusParam);
+    params.set("view", targetView);
+    if (targetView === "calendar") {
+      params.set("range", range);
+      params.set("date", anchorDate);
+    }
+    return `/admin/classes?${params.toString()}`;
+  }
 
   // Sequential, not Promise.all: both calls can write to the same
   // .data/class-occurrences.json file via ensureUpcomingOccurrences (inside
@@ -210,61 +223,103 @@ export default async function AdminClassesPage(props: PageProps<"/admin/classes"
           </form>
         </section>
 
-        <form method="get" className="mt-6 flex flex-wrap gap-3 text-sm">
-          <select
-            name="zone"
-            defaultValue={zoneParam ?? ""}
-            className="rounded-md border border-brand-ink/20 bg-white px-3 py-2"
-          >
-            <option value="">All zones</option>
-            <option value="gym">Gym</option>
-            <option value="daycare">Daycare</option>
-          </select>
-          <select
-            name="status"
-            defaultValue={statusParam ?? ""}
-            className="rounded-md border border-brand-ink/20 bg-white px-3 py-2"
-          >
-            <option value="">All statuses</option>
-            {STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="rounded-md bg-white px-3 py-2 font-semibold ring-1 ring-brand-ink/15 hover:bg-brand-bg"
-          >
-            Filter
-          </button>
-        </form>
-
-        <div className="mt-6 divide-y divide-brand-ink/10 rounded-lg border border-brand-ink/10 bg-white">
-          {occurrences.map((occurrence) => (
-            <Link
-              key={occurrence.id}
-              href={`/admin/classes/${occurrence.id}`}
-              className="flex flex-wrap items-center gap-3 px-4 py-3 text-sm hover:bg-brand-bg"
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <form method="get" className="flex flex-wrap gap-3 text-sm">
+            <input type="hidden" name="view" value={view} />
+            {view === "calendar" && (
+              <>
+                <input type="hidden" name="range" value={range} />
+                <input type="hidden" name="date" value={anchorDate} />
+              </>
+            )}
+            <select
+              name="zone"
+              defaultValue={zoneParam ?? ""}
+              className="rounded-md border border-brand-ink/20 bg-white px-3 py-2"
             >
-              <span className="w-44 shrink-0 text-brand-ink/70">
-                {occurrence.date} · {occurrence.startTime}–{occurrence.endTime}
-              </span>
-              <ZoneBadge zone={occurrence.zone} />
-              <span className="flex-1 font-medium">{occurrence.title}</span>
-              <span className="w-16 shrink-0 text-brand-ink/60">
-                {occurrence.signupCount}
-                {occurrence.capacity ? `/${occurrence.capacity}` : ""}
-              </span>
-              <StatusBadge status={occurrence.status} />
+              <option value="">All zones</option>
+              <option value="gym">Gym</option>
+              <option value="daycare">Daycare</option>
+            </select>
+            <select
+              name="status"
+              defaultValue={statusParam ?? ""}
+              className="rounded-md border border-brand-ink/20 bg-white px-3 py-2"
+            >
+              <option value="">All statuses</option>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="rounded-md bg-white px-3 py-2 font-semibold ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+            >
+              Filter
+            </button>
+          </form>
+
+          <div className="flex gap-2 text-sm">
+            <Link
+              href={viewHref("list")}
+              className={`rounded-md px-3 py-1.5 font-semibold ${
+                view === "list"
+                  ? "bg-brand-ink text-white"
+                  : "bg-white ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+              }`}
+            >
+              List
             </Link>
-          ))}
-          {occurrences.length === 0 && (
-            <p className="px-4 py-8 text-center text-sm text-brand-ink/50">
-              No classes match these filters.
-            </p>
-          )}
+            <Link
+              href={viewHref("calendar")}
+              className={`rounded-md px-3 py-1.5 font-semibold ${
+                view === "calendar"
+                  ? "bg-brand-ink text-white"
+                  : "bg-white ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+              }`}
+            >
+              Calendar
+            </Link>
+          </div>
         </div>
+
+        {view === "calendar" ? (
+          <ClassCalendar
+            occurrences={occurrences}
+            range={range}
+            anchorDate={anchorDate}
+            zoneParam={zoneParam}
+            statusParam={isOccurrenceStatus(statusParam) ? statusParam : undefined}
+          />
+        ) : (
+          <div className="mt-6 divide-y divide-brand-ink/10 rounded-lg border border-brand-ink/10 bg-white">
+            {occurrences.map((occurrence) => (
+              <Link
+                key={occurrence.id}
+                href={`/admin/classes/${occurrence.id}`}
+                className="flex flex-wrap items-center gap-3 px-4 py-3 text-sm hover:bg-brand-bg"
+              >
+                <span className="w-44 shrink-0 text-brand-ink/70">
+                  {occurrence.date} · {occurrence.startTime}–{occurrence.endTime}
+                </span>
+                <ZoneBadge zone={occurrence.zone} />
+                <span className="flex-1 font-medium">{occurrence.title}</span>
+                <span className="w-16 shrink-0 text-brand-ink/60">
+                  {occurrence.signupCount}
+                  {occurrence.capacity ? `/${occurrence.capacity}` : ""}
+                </span>
+                <StatusBadge status={occurrence.status} />
+              </Link>
+            ))}
+            {occurrences.length === 0 && (
+              <p className="px-4 py-8 text-center text-sm text-brand-ink/50">
+                No classes match these filters.
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

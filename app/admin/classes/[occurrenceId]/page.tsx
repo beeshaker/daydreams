@@ -2,27 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOccurrenceById } from "@/lib/classes/store";
 import { listSignupsByOccurrence } from "@/lib/classes/signups";
-import type { ClassSignup, NotificationChannel, NotificationDeliveryStatus, OccurrenceStatus } from "@/lib/classes/types";
+import type { ClassSignup, NotificationChannel, NotificationDeliveryStatus } from "@/lib/classes/types";
 import { cancelOccurrenceAction, confirmOccurrenceAction, rescheduleOccurrenceAction } from "../actions";
+import { StatusBadge } from "@/components/admin/ClassBadges";
 
 export const metadata = {
   title: "Admin — Class Occurrence",
 };
-
-const STATUS_STYLES: Record<OccurrenceStatus, string> = {
-  scheduled: "bg-brand-ink/10 text-brand-ink/70",
-  confirmed: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
-  rescheduled: "bg-amber-100 text-amber-700",
-};
-
-function StatusBadge({ status }: { status: OccurrenceStatus }) {
-  return (
-    <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLES[status]}`}>
-      {status}
-    </span>
-  );
-}
 
 /** Reduces a signup's notification log to the latest status per channel — entries are appended in order, so the last write per channel wins. */
 function formatNotificationReadout(signup: ClassSignup): string {

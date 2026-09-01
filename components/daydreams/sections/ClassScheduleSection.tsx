@@ -1,4 +1,5 @@
 import { ClassSignupForm } from "@/components/daydreams/ClassSignupForm";
+import { formatTimeLabel } from "@/lib/classes/dates";
 import type { ClassOccurrence } from "@/lib/classes/types";
 
 type Occurrence = ClassOccurrence & { signupCount: number };
@@ -13,14 +14,6 @@ function formatOccurrenceDate(dateString: string): string {
     day: "numeric",
     timeZone: "UTC",
   });
-}
-
-function formatOccurrenceTime(time: string): string {
-  const [hoursRaw, minutes] = time.split(":");
-  const hours = Number(hoursRaw);
-  const period = hours >= 12 ? "PM" : "AM";
-  const hour12 = hours % 12 === 0 ? 12 : hours % 12;
-  return minutes === "00" ? `${hour12}${period}` : `${hour12}:${minutes}${period}`;
 }
 
 function StatusBadge({ occurrence }: { occurrence: Occurrence }) {
@@ -49,9 +42,9 @@ function StatusBadge({ occurrence }: { occurrence: Occurrence }) {
     return (
       <span className="shrink-0 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700 zone-dark:bg-amber-400/20 zone-dark:text-amber-300">
         Moved from {formatOccurrenceDate(latest.fromDate)}{" "}
-        {formatOccurrenceTime(latest.fromStartTime)}–{formatOccurrenceTime(latest.fromEndTime)} to{" "}
-        {formatOccurrenceDate(occurrence.date)} {formatOccurrenceTime(occurrence.startTime)}–
-        {formatOccurrenceTime(occurrence.endTime)}
+        {formatTimeLabel(latest.fromStartTime)}–{formatTimeLabel(latest.fromEndTime)} to{" "}
+        {formatOccurrenceDate(occurrence.date)} {formatTimeLabel(occurrence.startTime)}–
+        {formatTimeLabel(occurrence.endTime)}
       </span>
     );
   }
@@ -70,8 +63,8 @@ function OccurrenceCard({ occurrence }: { occurrence: Occurrence }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-brand-lavender-strong zone-dark:text-brand-lavender">
-            {formatOccurrenceDate(occurrence.date)} · {formatOccurrenceTime(occurrence.startTime)}–
-            {formatOccurrenceTime(occurrence.endTime)}
+            {formatOccurrenceDate(occurrence.date)} · {formatTimeLabel(occurrence.startTime)}–
+            {formatTimeLabel(occurrence.endTime)}
           </p>
           <h4 className="mt-1 text-lg font-semibold text-brand-ink zone-dark:text-white">
             {occurrence.title}
