@@ -1,20 +1,8 @@
 import { getSignupCountsByOccurrenceIds } from "@/lib/classes/signups";
 import { ensureUpcomingOccurrences } from "@/lib/classes/generate";
 import { listOccurrences } from "@/lib/classes/store";
+import { todayDateString, addDaysToDateString } from "@/lib/classes/dates";
 import type { ClassOccurrence, OccurrenceStatus, Zone } from "@/lib/classes/types";
-
-function todayDateString(): string {
-  const now = new Date();
-  now.setUTCHours(0, 0, 0, 0);
-  return now.toISOString().slice(0, 10);
-}
-
-/** Adds `days` (>= 0) to a "YYYY-MM-DD" string, using UTC date math throughout. */
-function addDaysToDateString(dateString: string, days: number): string {
-  const date = new Date(`${dateString}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + days);
-  return date.toISOString().slice(0, 10);
-}
 
 /**
  * Read facade for the public booking page (Task 4) and admin page (Task 5):

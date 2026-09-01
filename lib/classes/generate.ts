@@ -1,18 +1,17 @@
 import { classTemplates } from "@/content/fixtures/class-templates";
 import { insertOccurrencesIfMissing, type OccurrenceCandidate } from "@/lib/classes/store";
+import { todayDateString, dateStringToUtcDate, utcDateToDateString } from "@/lib/classes/dates";
 import type { Zone } from "@/lib/classes/types";
-
-function toDateString(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
 
 /**
  * Expands active class templates for `zone` into dated occurrences covering
  * today through `today + windowDays` (inclusive), inserting any that don't
- * already exist. All date math runs in UTC (via the UTC* Date methods) so
- * "today" and each day's weekday are computed consistently regardless of
- * server timezone — mixing local and UTC date math here is what causes the
- * classic off-by-one-day bug.
+ * already exist. "Today" is anchored in the business's timezone (see
+ * lib/classes/dates.ts) rather than the server's — deriving it from the
+ * server's UTC clock would shift the whole window by up to a day whenever
+ * the two day boundaries don't line up. Once that anchor is resolved to a
+ * "YYYY-MM-DD" string, everything else is pure UTC calendar-date arithmetic
+ * (offsets and weekdays), which is timezone-agnostic and safe to mix freely.
  *
  * Candidate generation itself is pure computation (no I/O) — the full list
  * of (template, date) candidates is built first, then handed to
@@ -25,14 +24,13 @@ export async function ensureUpcomingOccurrences(zone: Zone, windowDays = 21): Pr
   const templates = classTemplates.filter((template) => template.zone === zone && template.active);
   if (templates.length === 0) return;
 
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  const today = dateStringToUtcDate(todayDateString());
 
   const candidates: OccurrenceCandidate[] = [];
   for (let offset = 0; offset <= windowDays; offset++) {
     const current = new Date(today);
     current.setUTCDate(current.getUTCDate() + offset);
-    const date = toDateString(current);
+    const date = utcDateToDateString(current);
     const weekday = current.getUTCDay();
 
     for (const template of templates) {
