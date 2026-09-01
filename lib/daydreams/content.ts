@@ -10,6 +10,8 @@ import { gymSchedule } from "@/content/fixtures/gym-schedule";
 import { gymGallery } from "@/content/fixtures/gym-gallery";
 import { gymTestimonials } from "@/content/fixtures/gym-testimonials";
 import { gymSiteSettings } from "@/content/fixtures/gym-site-settings";
+import { firstTimerSteps } from "@/content/fixtures/first-timer";
+import { gymFirstTimerSteps } from "@/content/fixtures/gym-first-timer";
 import type {
   Program,
   StaffMember,
@@ -17,6 +19,7 @@ import type {
   GalleryImage,
   ScheduleBlock,
   SiteSettings,
+  FirstTimerStep,
 } from "./types";
 
 /**
@@ -47,6 +50,10 @@ export async function getSchedule(): Promise<ScheduleBlock[]> {
   return schedule;
 }
 
+export async function getFirstTimerSteps(): Promise<FirstTimerStep[]> {
+  return firstTimerSteps;
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
   return siteSettings;
 }
@@ -61,6 +68,10 @@ export async function getTrainers(): Promise<StaffMember[]> {
 
 export async function getGymSchedule(): Promise<ScheduleBlock[]> {
   return gymSchedule;
+}
+
+export async function getGymFirstTimerSteps(): Promise<FirstTimerStep[]> {
+  return gymFirstTimerSteps;
 }
 
 export async function getGymGallery(): Promise<GalleryImage[]> {

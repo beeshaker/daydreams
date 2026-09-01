@@ -6,11 +6,13 @@ import {
   getTestimonials,
   getGallery,
   getSchedule,
+  getFirstTimerSteps,
   getSiteSettings,
   getGymClasses,
   getTrainers,
   getGymGallery,
   getGymTestimonials,
+  getGymFirstTimerSteps,
   getGymSiteSettings,
 } from "@/lib/daydreams/content";
 import { getOccurrencesWithCounts } from "@/lib/classes/queries";
@@ -20,6 +22,7 @@ import { ScheduleSection } from "@/components/daydreams/sections/ScheduleSection
 import { ClassScheduleSection } from "@/components/daydreams/sections/ClassScheduleSection";
 import { GallerySection } from "@/components/daydreams/sections/GallerySection";
 import { TestimonialsSection } from "@/components/daydreams/sections/TestimonialsSection";
+import { FirstTimerSection } from "@/components/daydreams/sections/FirstTimerSection";
 import { BookAVisitForm } from "@/components/daydreams/BookAVisitForm";
 import { BookASessionForm } from "@/components/dumbbells/BookASessionForm";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -43,6 +46,7 @@ const dumbbellsSections = [
   { id: "dumbbells-schedule", label: "Class Schedule" },
   { id: "dumbbells-gallery", label: "Gallery" },
   { id: "dumbbells-testimonials", label: "Members Say" },
+  { id: "dumbbells-first-timers", label: "First Timers" },
   { id: "join", label: "Join Us" },
 ];
 
@@ -53,6 +57,7 @@ const daydreamsSections = [
   { id: "sessions", label: "Book a Session" },
   { id: "gallery", label: "Gallery" },
   { id: "testimonials", label: "Parents Say" },
+  { id: "first-timers", label: "First Timers" },
   { id: "visit", label: "Book a Visit" },
 ];
 
@@ -63,11 +68,13 @@ export default async function SitePage() {
     schedule,
     gallery,
     testimonials,
+    firstTimerSteps,
     siteSettings,
     gymClasses,
     trainers,
     gymGallery,
     gymTestimonials,
+    gymFirstTimerSteps,
     gymSiteSettings,
   ] = await Promise.all([
     getPrograms(),
@@ -75,11 +82,13 @@ export default async function SitePage() {
     getSchedule(),
     getGallery(),
     getTestimonials(),
+    getFirstTimerSteps(),
     getSiteSettings(),
     getGymClasses(),
     getTrainers(),
     getGymGallery(),
     getGymTestimonials(),
+    getGymFirstTimerSteps(),
     getGymSiteSettings(),
   ]);
 
@@ -210,6 +219,20 @@ export default async function SitePage() {
                 </div>
               </section>
 
+              <section id="dumbbells-first-timers" className="scroll-mt-24">
+                <h3 className="font-bebas text-3xl uppercase tracking-wide">First Timers</h3>
+                <p className="mt-2 text-sm text-white/60">
+                  New around here? Here&apos;s how to get started — then check{" "}
+                  <a href="#dumbbells-schedule" className="font-semibold text-brand-lavender underline">
+                    this week&apos;s class schedule
+                  </a>{" "}
+                  to book your first spot.
+                </p>
+                <div className="mt-5">
+                  <FirstTimerSection steps={gymFirstTimerSteps} />
+                </div>
+              </section>
+
               <section id="join" className="scroll-mt-24">
                 <h3 className="font-bebas text-3xl uppercase tracking-wide">Join Us</h3>
                 <p className="mt-2 text-sm text-white/60">
@@ -291,6 +314,20 @@ export default async function SitePage() {
                 <h3 className="font-baloo text-2xl text-brand-ink">Parents Say</h3>
                 <div className="mt-5">
                   <TestimonialsSection testimonials={testimonials} />
+                </div>
+              </section>
+
+              <section id="first-timers" className="scroll-mt-24">
+                <h3 className="font-baloo text-2xl text-brand-ink">First Timers</h3>
+                <p className="mt-2 text-sm text-brand-ink/70">
+                  New to Daydreams? Here&apos;s how a first visit works — then check{" "}
+                  <a href="#sessions" className="font-semibold text-brand-lavender-strong underline">
+                    upcoming sessions
+                  </a>{" "}
+                  to book a spot.
+                </p>
+                <div className="mt-5">
+                  <FirstTimerSection steps={firstTimerSteps} />
                 </div>
               </section>
 

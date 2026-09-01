@@ -55,6 +55,12 @@ export type ScheduleBlock = {
   activity: string;
 };
 
+export type FirstTimerStep = {
+  id: string;
+  title: string;
+  description: string;
+};
+
 export type SiteHours = {
   day: string;
   open: string;
