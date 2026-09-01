@@ -10,6 +10,7 @@ import {
 } from "@/lib/classes/store";
 import { listSignupsByOccurrence } from "@/lib/classes/signups";
 import { notifyOccurrenceChange } from "@/lib/notifications/classChangeNotifier";
+import { parseOccurrenceCsv, bulkCreateOccurrences } from "@/lib/classes/csv";
 import type { Zone } from "@/lib/classes/types";
 
 const ZONES: Zone[] = ["gym", "daycare"];
@@ -45,6 +46,27 @@ export async function createManualOccurrenceAction(formData: FormData): Promise<
 
   revalidatePath("/admin/classes");
   redirect("/admin/classes");
+}
+
+export async function bulkUploadOccurrencesAction(formData: FormData): Promise<void> {
+  await assertAdminRequest();
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) return;
+
+  const text = await file.text();
+  const { rows, errors } = parseOccurrenceCsv(text);
+  const { created, skippedDuplicates } = await bulkCreateOccurrences(rows);
+
+  revalidatePath("/admin/classes");
+  revalidatePath("/site");
+
+  const params = new URLSearchParams({
+    uploadCreated: String(created),
+    uploadSkipped: String(skippedDuplicates),
+    uploadErrors: String(errors.length),
+  });
+  redirect(`/admin/classes?${params.toString()}`);
 }
 
 export async function confirmOccurrenceAction(formData: FormData): Promise<void> {

@@ -106,7 +106,7 @@ export async function insertOccurrencesIfMissing(candidates: OccurrenceCandidate
   await writeOccurrences([...occurrences, ...toInsert]);
 }
 
-export async function createManualOccurrence(input: {
+export type ManualOccurrenceInput = {
   zone: Zone;
   title: string;
   description?: string;
@@ -114,10 +114,24 @@ export async function createManualOccurrence(input: {
   startTime: string;
   endTime: string;
   capacity: number | null;
-}): Promise<ClassOccurrence> {
+};
+
+/**
+ * Batch-creates manual (one-off) occurrences: one read + one write for the
+ * whole set, the same read-once/write-once shape as
+ * insertOccurrencesIfMissing. createManualOccurrence (singular, below) is a
+ * thin wrapper over this for the single-add admin form; the CSV
+ * bulk-upload flow calls this directly so an N-row upload doesn't do N
+ * sequential read-modify-write cycles.
+ */
+export async function createManualOccurrences(
+  inputs: ManualOccurrenceInput[],
+): Promise<ClassOccurrence[]> {
+  if (inputs.length === 0) return [];
+
   const occurrences = await readOccurrences();
   const now = new Date().toISOString();
-  const stored: ClassOccurrence = {
+  const created: ClassOccurrence[] = inputs.map((input) => ({
     ...input,
     id: crypto.randomUUID(),
     templateId: null,
@@ -128,10 +142,15 @@ export async function createManualOccurrence(input: {
     rescheduleHistory: [],
     createdAt: now,
     updatedAt: now,
-  };
-  occurrences.push(stored);
-  await writeOccurrences(occurrences);
-  return stored;
+  }));
+
+  await writeOccurrences([...occurrences, ...created]);
+  return created;
+}
+
+export async function createManualOccurrence(input: ManualOccurrenceInput): Promise<ClassOccurrence> {
+  const [created] = await createManualOccurrences([input]);
+  return created;
 }
 
 export async function updateOccurrenceStatus(

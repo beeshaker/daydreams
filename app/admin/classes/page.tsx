@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getOccurrencesWithCounts } from "@/lib/classes/queries";
 import type { OccurrenceStatus, Zone } from "@/lib/classes/types";
-import { createManualOccurrenceAction } from "./actions";
+import { createManualOccurrenceAction, bulkUploadOccurrencesAction } from "./actions";
 
 export const metadata = {
   title: "Admin — Classes",
@@ -41,11 +41,20 @@ function ZoneBadge({ zone }: { zone: Zone }) {
   );
 }
 
+function firstParam(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
 export default async function AdminClassesPage(props: PageProps<"/admin/classes">) {
   const searchParams = await props.searchParams;
-  const zoneParam = Array.isArray(searchParams.zone) ? searchParams.zone[0] : searchParams.zone;
-  const statusParam = Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status;
+  const zoneParam = firstParam(searchParams.zone);
+  const statusParam = firstParam(searchParams.status);
   const status = isOccurrenceStatus(statusParam) ? statusParam : undefined;
+
+  const uploadCreated = firstParam(searchParams.uploadCreated);
+  const uploadSkipped = firstParam(searchParams.uploadSkipped);
+  const uploadErrors = firstParam(searchParams.uploadErrors);
+  const showUploadResult = uploadCreated !== undefined;
 
   // Sequential, not Promise.all: both calls can write to the same
   // .data/class-occurrences.json file via ensureUpcomingOccurrences (inside
@@ -77,6 +86,56 @@ export default async function AdminClassesPage(props: PageProps<"/admin/classes"
             </Link>
           </div>
         </div>
+
+        {showUploadResult && (
+          <p role="status" className="mt-6 rounded-md bg-brand-mauve/15 px-4 py-3 text-sm text-brand-ink">
+            Upload complete: <strong>{uploadCreated}</strong> created, <strong>{uploadSkipped}</strong>{" "}
+            skipped as duplicates
+            {uploadErrors && uploadErrors !== "0" ? (
+              <>
+                , <strong>{uploadErrors}</strong> row{uploadErrors === "1" ? "" : "s"} had errors and were
+                skipped
+              </>
+            ) : null}
+            .
+          </p>
+        )}
+
+        <section className="mt-6 rounded-lg border border-brand-ink/10 bg-white p-4">
+          <h2 className="text-sm font-bold">Bulk upload (CSV)</h2>
+          <p className="mt-1 text-sm text-brand-ink/60">
+            Add many one-off sessions at once.{" "}
+            <Link
+              href="/admin/classes/template"
+              className="font-semibold text-brand-lavender-strong underline"
+            >
+              Download the CSV template
+            </Link>
+            , fill in a row per session, then upload it below. Rows matching an existing session
+            (same zone, date, start time, and title) are skipped automatically.
+          </p>
+          <form
+            action={bulkUploadOccurrencesAction}
+            className="mt-3 flex flex-wrap items-end gap-3 text-sm"
+          >
+            <label className="flex flex-col gap-1 font-medium">
+              CSV file
+              <input
+                type="file"
+                name="file"
+                accept=".csv,text/csv"
+                required
+                className="rounded-md border border-brand-ink/20 bg-white px-3 py-2"
+              />
+            </label>
+            <button
+              type="submit"
+              className="rounded-md bg-brand-pink-strong px-4 py-2 font-semibold text-white hover:brightness-95"
+            >
+              Upload
+            </button>
+          </form>
+        </section>
 
         <section className="mt-6 rounded-lg border border-brand-ink/10 bg-white p-4">
           <h2 className="text-sm font-bold">Add one-off session</h2>
