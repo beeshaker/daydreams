@@ -41,6 +41,9 @@ export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
             <Link href="/admin/kb" className="text-brand-lavender-strong underline">
               Knowledge base
             </Link>
+            <Link href="/admin/classes" className="text-brand-lavender-strong underline">
+              Classes
+            </Link>
             <a
               href={`/admin/leads/export?${exportQuery.toString()}`}
               className="rounded-md bg-brand-pink-strong px-3 py-1.5 font-semibold text-white hover:brightness-95"

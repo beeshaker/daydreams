@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { ensureUpcomingOccurrences } from "@/lib/classes/generate";
-import { listOccurrences } from "@/lib/classes/store";
-import { getSignupCountsByOccurrenceIds } from "@/lib/classes/signups";
+import { getOccurrencesWithCounts } from "@/lib/classes/queries";
 import type { OccurrenceStatus, Zone } from "@/lib/classes/types";
 import { createManualOccurrenceAction } from "./actions";
 
@@ -47,20 +45,23 @@ export default async function AdminClassesPage(props: PageProps<"/admin/classes"
   const searchParams = await props.searchParams;
   const zoneParam = Array.isArray(searchParams.zone) ? searchParams.zone[0] : searchParams.zone;
   const statusParam = Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status;
+  const status = isOccurrenceStatus(statusParam) ? statusParam : undefined;
 
   // Sequential, not Promise.all: both calls can write to the same
-  // .data/class-occurrences.json file via insertOccurrenceIfMissing, whose
-  // read-modify-write isn't synchronized, so running them concurrently
-  // risks one write clobbering the other.
-  await ensureUpcomingOccurrences("gym");
-  await ensureUpcomingOccurrences("daycare");
+  // .data/class-occurrences.json file via ensureUpcomingOccurrences (inside
+  // getOccurrencesWithCounts), whose read-modify-write isn't synchronized,
+  // so running them concurrently risks one write clobbering the other.
+  // Always fetched for both zones regardless of the zone filter below, so
+  // the filter selector never leaves the other zone's occurrences stale.
+  const gymOccurrences = await getOccurrencesWithCounts("gym", { includePast: true, status });
+  const daycareOccurrences = await getOccurrencesWithCounts("daycare", { includePast: true, status });
 
-  const occurrences = await listOccurrences({
-    zone: isZone(zoneParam) ? zoneParam : undefined,
-    status: isOccurrenceStatus(statusParam) ? statusParam : undefined,
-  });
-
-  const counts = await getSignupCountsByOccurrenceIds(occurrences.map((occurrence) => occurrence.id));
+  const allOccurrences = [...gymOccurrences, ...daycareOccurrences].sort(
+    (a, b) => a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime),
+  );
+  const occurrences = isZone(zoneParam)
+    ? allOccurrences.filter((occurrence) => occurrence.zone === zoneParam)
+    : allOccurrences;
 
   return (
     <div className="min-h-screen bg-brand-bg px-6 py-10 text-brand-ink">
@@ -193,7 +194,7 @@ export default async function AdminClassesPage(props: PageProps<"/admin/classes"
               <ZoneBadge zone={occurrence.zone} />
               <span className="flex-1 font-medium">{occurrence.title}</span>
               <span className="w-16 shrink-0 text-brand-ink/60">
-                {counts[occurrence.id] ?? 0}
+                {occurrence.signupCount}
                 {occurrence.capacity ? `/${occurrence.capacity}` : ""}
               </span>
               <StatusBadge status={occurrence.status} />
