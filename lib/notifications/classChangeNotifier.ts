@@ -5,10 +5,21 @@ import { sendClassCancelledWhatsApp, sendClassRescheduledWhatsApp } from "@/lib/
 
 /**
  * Notifies every affected signup that an occurrence was cancelled or
- * rescheduled, over both email and WhatsApp. Each signup is handled
- * independently via Promise.allSettled — one signup's notification failure
- * (or a rejected promise from a sender) must never block another signup's
- * notifications from going out or being logged.
+ * rescheduled, over both email and WhatsApp.
+ *
+ * Within one signup, the two channels are sent in parallel (they're
+ * independent). Across signups, handling is SEQUENTIAL — a `for` loop with
+ * an `await` per signup, not a `.map(async ...)` + Promise.allSettled over
+ * the whole list. This is required, not just stylistic: each signup's
+ * handling ends by calling appendNotificationLog, which does an
+ * unsynchronized read-modify-write of the whole class-signups.json file.
+ * If multiple signups' appendNotificationLog calls ran concurrently (as
+ * they would with .map + allSettled, especially likely when every channel
+ * resolves near-instantly via the env-vars-unset "skipped" path), their
+ * writes would race and whichever lands last would silently discard every
+ * other signup's logged entries. A try/catch per iteration still preserves
+ * the original guarantee that one signup's failure can't block another's —
+ * it just isn't concurrent anymore.
  */
 export async function notifyOccurrenceChange(
   occurrence: ClassOccurrence,
@@ -23,8 +34,8 @@ export async function notifyOccurrenceChange(
     return;
   }
 
-  await Promise.allSettled(
-    signups.map(async (signup) => {
+  for (const signup of signups) {
+    try {
       const [emailStatus, whatsappStatus] = await Promise.all([
         changeType === "cancelled"
           ? sendClassCancelledEmail(signup, occurrence)
@@ -41,6 +52,8 @@ export async function notifyOccurrenceChange(
       ];
 
       await appendNotificationLog(signup.id, entries);
-    }),
-  );
+    } catch (error) {
+      console.error(`[classes] notifyOccurrenceChange failed for signup ${signup.id}:`, error);
+    }
+  }
 }
