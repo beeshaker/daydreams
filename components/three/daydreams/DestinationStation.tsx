@@ -185,7 +185,7 @@ export const DestinationStation = memo(function DestinationStation({
         style={{ pointerEvents: "none" }}
       >
         <span
-          className="whitespace-nowrap rounded-lg border-2 bg-brand-bg px-2.5 py-1 text-xs font-bold text-brand-ink shadow-md"
+          className="whitespace-nowrap rounded-lg border-2 bg-brand-bg px-2.5 py-1 text-xs font-baloo font-bold text-brand-ink shadow-md"
           style={{ borderColor: destination.color }}
         >
           {destination.blockLabel}

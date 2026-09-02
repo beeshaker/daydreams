@@ -12,8 +12,8 @@ const BOB_FREQUENCY = 9;
 const BOB_AMOUNT = 0.035;
 const TILT_AMOUNT = 0.08;
 
-const FUR = "#a8703f";
-const FUR_LIGHT = "#e0b27e";
+const FUR = "#f2789f";
+const FUR_LIGHT = "#fbc4d9";
 const INK = "#2b2140";
 
 /**
