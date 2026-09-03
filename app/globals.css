@@ -72,3 +72,18 @@ body {
 .animate-celebration-in {
   animation: celebration-in 0.35s ease-out;
 }
+
+/* DestinationStation.tsx: gentle bob for the floating word tag above each station. */
+@keyframes label-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-label-float {
+  animation: label-float 2.6s ease-in-out infinite;
+}

@@ -5,6 +5,7 @@ import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import { Html, RoundedBox, useGLTF } from "@react-three/drei";
 import type { IntersectionEnterPayload, IntersectionExitPayload } from "@react-three/rapier";
 import type { Destination, DestinationId } from "@/lib/daydreams/types";
+import { Star } from "@/components/daydreams/Star";
 
 const SENSOR_HALF: [number, number, number] = [1, 1, 1];
 const SENSOR_HEIGHT = 0.8;
@@ -184,13 +185,20 @@ export const DestinationStation = memo(function DestinationStation({
         occlude={false}
         style={{ pointerEvents: "none" }}
       >
-        <span
-          className="whitespace-nowrap rounded-lg border-2 bg-brand-bg px-2.5 py-1 text-xs font-baloo font-bold text-brand-ink shadow-md"
-          style={{ borderColor: destination.color }}
-        >
-          {destination.blockLabel}
-          {discovered && " ✓"}
-        </span>
+        <div className="animate-label-float relative">
+          <span
+            className="flex items-center gap-1 whitespace-nowrap rounded-2xl px-3 py-1.5 font-baloo text-xs font-bold text-white shadow-md"
+            style={{ backgroundColor: destination.color, textShadow: "0 1px 2px rgba(0,0,0,0.15)" }}
+          >
+            {destination.blockLabel}
+            {discovered && <Star filled size="sm" />}
+          </span>
+          <span
+            aria-hidden="true"
+            className="absolute left-1/2 top-full h-0 w-0 -translate-x-1/2 border-x-[7px] border-t-[8px] border-x-transparent"
+            style={{ borderTopColor: destination.color }}
+          />
+        </div>
       </Html>
     </RigidBody>
   );
