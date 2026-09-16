@@ -187,32 +187,31 @@ const PAGE_STYLE = `
   }
 
   /* -------------------------------------------------------------- close */
-  /* The pinned photo moment folds into an ordinary flowing section: a
-     fixed-height photo banner up top (so a tall page with a full form
-     doesn't stretch the photo into a thin cropped strip), then the actual
-     booking form below it on the plain canvas. Hours/address/phone moved
-     out to the page footer. */
-  .close-banner {
-    position: relative; overflow: hidden;
-    min-height: min(560px, 78vh);
-    display: flex; align-items: flex-end;
+  /* Full-bleed like the hero: a dark canvas with her photo anchored to the
+     right (not stretched edge-to-edge, so nothing crops or covers her),
+     copy and the compact sign-up form sitting in the dark field on the
+     left. Hours/address/phone live in the page footer. */
+  .close {
+    position: relative; overflow: clip; min-height: 100vh; min-height: 100svh;
+    display: flex; align-items: center; background: var(--sc-canvas);
   }
-  .close-banner__img {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: -2;
+  .close-glow {
+    position: absolute; inset: -20% -10%; z-index: 0; pointer-events: none;
+    background: radial-gradient(60% 70% at 68% 45%, #2a1a10 0%, var(--sc-canvas) 62%);
   }
-  .close-banner__scrim {
-    position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--sc-canvas) 15%, transparent) 0%,
-      color-mix(in oklab, var(--sc-canvas) 60%, transparent) 60%,
-      var(--sc-canvas) 100%);
+  .close-photo {
+    position: absolute; inset: 0; left: 34%; z-index: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 30%);
+    mask-image: linear-gradient(to right, transparent, #000 30%);
   }
-  .close-banner__copy {
-    position: relative; z-index: 1; max-width: 34rem;
-    padding: var(--sc-gutter); padding-top: var(--sc-8);
+  .close-photo__img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 10%; display: block; }
+  .close-content { position: relative; z-index: 1; max-width: 36rem; margin-inline: 0 auto; padding-block: var(--sc-8); }
+  .close-content .sc-body { margin-top: var(--sc-4); max-width: 30rem; }
+  .close .lead-form { margin-top: var(--sc-6); }
+  @media (max-width: 900px) {
+    .close-photo { left: 0; opacity: .35; mask-image: linear-gradient(to bottom, transparent, #000 30%); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%); }
+    .close-content { max-width: none; }
   }
-  .close-banner__copy .sc-body { margin-top: var(--sc-4); }
-  .close .lead-form { margin-top: var(--sc-7); }
 
   /* ----------------------------------------------------------- schedule */
   .schedule-list {
@@ -259,6 +258,23 @@ const PAGE_STYLE = `
   .lead-form__status[data-state="error"] { color: #ff8a7a; }
   .lead-form__fallback { margin-top: var(--sc-6); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
   .lead-form__fallback a { color: var(--sc-ink); }
+
+  /* compact variant: thin underlines instead of boxes, for the close section */
+  .lead-form--compact { max-width: 27rem; padding-top: var(--sc-5); border-top: 1px solid var(--sc-hairline); }
+  .lead-form--compact .lead-form__grid { gap: var(--sc-4); }
+  .lead-form--compact label { font-size: var(--sc-t-xs); }
+  .lead-form--compact input[type="text"],
+  .lead-form--compact input[type="email"],
+  .lead-form--compact input[type="tel"],
+  .lead-form--compact textarea {
+    background: transparent; border: none; border-bottom: 1px solid var(--sc-hairline-strong);
+    border-radius: 0; padding: var(--sc-2) 0;
+  }
+  .lead-form--compact input:focus-visible, .lead-form--compact textarea:focus-visible {
+    outline: none; border-bottom-color: var(--sc-accent);
+  }
+  .lead-form--compact .lead-form__message { margin-top: var(--sc-4); }
+  .lead-form--compact .lead-form__actions { margin-top: var(--sc-5); }
   @media (max-width: 640px) {
     .lead-form__grid { grid-template-columns: 1fr; }
     .schedule-activity { text-align: right; max-width: 60%; }
@@ -504,17 +520,18 @@ const PAGE_BODY = `
        real form (it used to be a separate section below); hours/address/
        phone that used to sit in the closing copy now live in the footer. -->
   <section id="join" class="sc-section close" data-sc-act="flow" data-sc-drift="#0b0908">
-    <div class="close-banner">
-      <img class="close-banner__img" src="/dumbbells-premium/assets/close-bg.webp" alt="" style="object-position: 50% 8%;">
-      <div class="close-banner__scrim" aria-hidden="true"></div>
-      <div class="close-banner__copy sc-stack" data-sc-in data-sc-stagger="60">
+    <div class="close-glow" aria-hidden="true"></div>
+    <div class="close-photo" aria-hidden="true">
+      <img class="close-photo__img" src="/dumbbells-premium/assets/sat.png" alt="">
+    </div>
+
+    <div class="sc-wrap close-content">
+      <div class="close-content__copy sc-stack" data-sc-in data-sc-stagger="60">
         <h2 class="sc-display sc-display--lg">Your journey starts now. For real this time.</h2>
         <p class="sc-body">Come in for a session. Meet your coach. See what a gym feels like when the coaching is actually good.</p>
       </div>
-    </div>
 
-    <div class="sc-wrap">
-      <form id="lead-form" class="lead-form" data-sc-in novalidate>
+      <form id="lead-form" class="lead-form lead-form--compact" data-sc-in novalidate>
         <div class="lead-form__hp" aria-hidden="true">
           <label for="lf-company">Company website</label>
           <input type="text" id="lf-company" name="companyWebsite" tabindex="-1" autocomplete="off">
