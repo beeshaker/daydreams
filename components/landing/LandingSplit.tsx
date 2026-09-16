@@ -33,7 +33,7 @@ export function LandingSplit() {
       : "/branding/logo.png";
 
   return (
-    <div className="relative h-dvh w-dvw overflow-hidden bg-brand-bg">
+    <main className="relative h-dvh w-dvw overflow-hidden bg-brand-bg">
       <Link
         href="/daydreams"
         aria-label="Enter Daydreams"
@@ -45,7 +45,7 @@ export function LandingSplit() {
         className="absolute inset-y-0 left-0 z-0 w-1/2"
       />
       <Link
-        href="/site#dumbbells"
+        href="/dumbbells"
         aria-label="Enter Dumbbells"
         onClick={() => trackEvent("landing_dumbbells_selected")}
         onMouseEnter={() => setDumbbellsActive(true)}
@@ -94,6 +94,6 @@ export function LandingSplit() {
           </span>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

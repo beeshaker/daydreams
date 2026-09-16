@@ -3,11 +3,13 @@ import type { SiteSettings } from "@/lib/daydreams/types";
 export const gymSiteSettings: SiteSettings = {
   businessName: "Dumbbells",
   tagline: "Strength training for people with a life outside the gym.",
-  address: "123 Play Street, Suite B, Springfield",
-  phone: "(555) 010-2020",
-  email: "hello@daydreamsanddumbbells.com",
+  address: "41 Gurviellia Grove, Nairobi",
+  phone: "0180 117040",
+  email: "daydreamsanddumbbells@gmail.com",
   hours: [
-    { day: "Monday – Friday", open: "5:00 AM", close: "9:00 PM" },
-    { day: "Saturday – Sunday", open: "7:00 AM", close: "5:00 PM" },
+    { day: "Monday – Friday", open: "8:30 AM", close: "6:00 PM" },
+    { day: "Saturday", open: "9:00 AM", close: "1:00 PM" },
+    { day: "Sunday", open: "Closed", close: "Closed" },
   ],
+  instagramUrl: "https://www.instagram.com/daydreamsanddumbbells/",
 };

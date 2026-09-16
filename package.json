@@ -9,14 +9,26 @@
     "lint": "eslint",
     "postinstall": "patch-package",
     "configure:agent": "tsx scripts/configure-agent-log-lead-tool.ts",
-    "seed:kb": "tsx scripts/seed-knowledge-base.ts"
+    "seed:kb": "tsx scripts/seed-knowledge-base.ts",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed-admin": "tsx scripts/seed-admin.ts",
+    "leads:import-legacy": "tsx scripts/import-legacy-leads.ts",
+    "leads:purge": "tsx scripts/purge-expired-leads.ts",
+    "leads:retry-emails": "tsx scripts/retry-failed-emails.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@elevenlabs/react": "^1.15.0",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "@react-three/rapier": "^2.2.0",
+    "bcryptjs": "^3.0.3",
+    "iron-session": "^8.0.4",
     "next": "16.3.3",
+    "otplib": "^13.5.0",
+    "pg": "^8.23.0",
+    "playwright-core": "^1.63.0",
+    "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "^0.185.1",
@@ -24,15 +36,22 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.185.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
+    "jsdom": "^29.1.1",
     "patch-package": "^8.0.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }

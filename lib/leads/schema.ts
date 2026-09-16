@@ -19,6 +19,10 @@ export const leadPayloadSchema = z.object({
   }),
   // Honeypot — real users never see or fill this field.
   companyWebsite: z.string().optional().default(""),
+  // Cloudflare Turnstile response token; verified server-side in the API
+  // route. Optional so the schema still validates when TURNSTILE_SITE_KEY
+  // is unset (dev mode) and the widget never rendered.
+  turnstileToken: z.string().optional(),
 });
 
 export type ValidatedLeadPayload = z.infer<typeof leadPayloadSchema>;

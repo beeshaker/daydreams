@@ -1,3 +1,5 @@
+import { fetchWithTimeout } from "@/lib/http/fetchWithTimeout";
+
 const ELEVENLABS_API_BASE = "https://api.elevenlabs.io";
 
 export class ElevenLabsApiError extends Error {
@@ -20,10 +22,14 @@ export function requireEnv(name: "ELEVENLABS_API_KEY" | "ELEVENLABS_AGENT_ID"): 
 
 async function elevenlabsFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const apiKey = requireEnv("ELEVENLABS_API_KEY");
-  const res = await fetch(`${ELEVENLABS_API_BASE}${path}`, {
-    ...init,
-    headers: { "xi-api-key": apiKey, ...init.headers },
-  });
+  const res = await fetchWithTimeout(
+    `${ELEVENLABS_API_BASE}${path}`,
+    {
+      ...init,
+      headers: { "xi-api-key": apiKey, ...init.headers },
+    },
+    10000,
+  );
 
   if (!res.ok) {
     let body: unknown;

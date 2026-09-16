@@ -6,7 +6,7 @@ import { trackEvent } from "@/lib/analytics";
 export function TraditionalToggle({ prominent }: { prominent: boolean }) {
   return (
     <Link
-      href="/site#daydreams"
+      href="/daydreams/site"
       onClick={() => trackEvent("daydreams_traditional_selected")}
       className={
         "pointer-events-auto rounded-full bg-brand-lavender-strong font-semibold text-white shadow-md transition hover:brightness-95 " +

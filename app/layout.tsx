@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-/** Dumbbells' dark/bold traditional-site zone (see globals.css's `zone-dark` variant). */
+/** Dumbbells' dark/bold traditional site (see globals.css's `zone-dark` variant). */
 const bebasNeue = Bebas_Neue({
   weight: "400",
   variable: "--font-bebas-neue",

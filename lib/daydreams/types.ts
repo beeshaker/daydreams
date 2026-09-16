@@ -68,6 +68,7 @@ export type SiteSettings = {
   phone: string;
   email: string;
   hours: SiteHours[];
+  instagramUrl?: string;
 };
 
 export type DaydreamsGameStatus = "loading" | "playing" | "paused" | "panel-open";
@@ -100,4 +101,6 @@ export type LeadPayload = {
   consent: boolean;
   /** Honeypot field — must stay empty; non-empty means a bot filled the form. */
   companyWebsite?: string;
+  /** Cloudflare Turnstile response token, verified server-side. */
+  turnstileToken?: string;
 };

@@ -9,6 +9,14 @@ const BACKWARD_KEYS = new Set(["arrowdown", "s"]);
 const LEFT_KEYS = new Set(["arrowleft", "a"]);
 const RIGHT_KEYS = new Set(["arrowright", "d"]);
 
+/** True when the event target is a form control (or contenteditable) that should receive normal typed keys. */
+export function isTypingTarget(target: EventTarget | null): boolean {
+  const el = target as HTMLElement | null;
+  if (!el) return false;
+  const tag = el.tagName;
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || Boolean(el.isContentEditable);
+}
+
 /**
  * A 2D move-direction vector (x, z each in [-1, 1], not normalized here —
  * the character controller normalizes) instead of a driving throttle/steer
@@ -31,6 +39,7 @@ export function useWalkingInput() {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
+      if (isTypingTarget(event.target)) return;
       const key = event.key.toLowerCase();
       const keys = keysRef.current;
       if (FORWARD_KEYS.has(key)) keys.forward = true;
@@ -43,6 +52,7 @@ export function useWalkingInput() {
     }
 
     function handleKeyUp(event: KeyboardEvent) {
+      if (isTypingTarget(event.target)) return;
       const key = event.key.toLowerCase();
       const keys = keysRef.current;
       if (FORWARD_KEYS.has(key)) keys.forward = false;

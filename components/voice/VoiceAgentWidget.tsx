@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { usePathname } from "next/navigation";
 import { ConversationProvider, useConversation } from "@elevenlabs/react";
 import { submitLead } from "@/lib/leads/submit";
 import { trackEvent } from "@/lib/analytics";
 import type { LeadType } from "@/lib/daydreams/types";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 type TranscriptEntry = { role: "user" | "agent"; text: string };
 
@@ -18,6 +19,7 @@ type LogLeadParams = {
 };
 
 function VoiceAgentModal({ onClose }: { onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [textInput, setTextInput] = useState("");
   const [textOnly, setTextOnly] = useState(false);
@@ -96,6 +98,8 @@ function VoiceAgentModal({ onClose }: { onClose: () => void }) {
     onClose();
   }
 
+  useFocusTrap({ active: true, containerRef: modalRef, onEscape: handleClose });
+
   return (
     <div
       className="fixed inset-0 z-40 flex items-end justify-center bg-black/40 sm:items-center"
@@ -103,7 +107,11 @@ function VoiceAgentModal({ onClose }: { onClose: () => void }) {
       aria-modal="true"
       aria-label="Talk to us"
     >
-      <div className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-brand-bg sm:rounded-2xl">
+      <div
+        ref={modalRef}
+        tabIndex={-1}
+        className="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-brand-bg outline-none sm:rounded-2xl"
+      >
         <div className="flex items-center justify-between border-b border-brand-ink/10 px-5 py-3">
           <p className="font-bold text-brand-ink">Talk to us</p>
           <button
@@ -207,7 +215,7 @@ export function VoiceAgentWidget() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  if (pathname?.startsWith("/daydreams") || pathname?.startsWith("/admin")) {
+  if (pathname === "/daydreams" || pathname?.startsWith("/admin")) {
     return null;
   }
 

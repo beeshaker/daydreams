@@ -23,7 +23,7 @@ export default function DaydreamsError({
       </p>
       <div className="flex gap-3">
         <Link
-          href="/site#daydreams"
+          href="/daydreams/site"
           className="rounded-full bg-brand-pink-strong px-5 py-2.5 font-semibold text-white hover:brightness-95"
         >
           Open Daydreams website

@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import type { LeadSource } from "@/lib/daydreams/types";
 import { submitLead } from "@/lib/leads/submit";
 import { trackEvent } from "@/lib/analytics";
+import { Turnstile } from "@/components/shared/Turnstile";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function BookAVisitForm({ source }: { source: LeadSource }) {
+export function BookAVisitForm({
+  source,
+  turnstileSiteKey,
+}: {
+  source: LeadSource;
+  turnstileSiteKey: string;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const turnstileTokenRef = useRef<string>("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,6 +38,7 @@ export function BookAVisitForm({ source }: { source: LeadSource }) {
       message: String(data.get("message") ?? "") || undefined,
       consent: data.get("consent") === "on",
       companyWebsite: String(data.get("companyWebsite") ?? ""),
+      turnstileToken: turnstileTokenRef.current || undefined,
     });
 
     if (result.success) {
@@ -138,6 +147,13 @@ export function BookAVisitForm({ source }: { source: LeadSource }) {
           interest — it does not complete enrollment.
         </span>
       </label>
+
+      <Turnstile
+        siteKey={turnstileSiteKey}
+        onVerify={(token) => {
+          turnstileTokenRef.current = token;
+        }}
+      />
 
       {status === "error" && errorMessage && (
         <p role="alert" className="text-sm text-red-600">

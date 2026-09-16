@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* /site's Dumbbells zone: wrap a subtree in .zone-dark to flip it to the dark/bold treatment. */
+/* Dumbbells' traditional site: .zone-dark applies its dark/bold treatment. */
 @custom-variant zone-dark (&:where(.zone-dark, .zone-dark *));
 
 :root {

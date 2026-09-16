@@ -21,5 +21,10 @@ export default async function DaydreamsPage() {
     getTestimonials(),
   ]);
 
-  return <DaydreamsGame content={{ programs, staff, schedule, gallery, testimonials }} />;
+  return (
+    <DaydreamsGame
+      content={{ programs, staff, schedule, gallery, testimonials }}
+      turnstileSiteKey={process.env.TURNSTILE_SITE_KEY ?? ""}
+    />
+  );
 }

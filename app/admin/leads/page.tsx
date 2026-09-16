@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { listLeads, type LeadStatus } from "@/lib/leads/store";
-import { updateLeadAction } from "./actions";
+import { updateLeadAction, purgeExpiredLeadsAction, retryFailedEmailsAction } from "./actions";
 
 export const metadata = {
   title: "Admin — Leads",
 };
+
+export const dynamic = "force-dynamic";
 
 const STATUSES: LeadStatus[] = ["new", "contacted", "booked", "closed"];
 
@@ -37,9 +39,12 @@ export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Leads</h1>
-          <div className="flex gap-3 text-sm">
+          <div className="flex items-center gap-3 text-sm">
             <Link href="/admin/kb" className="text-brand-lavender-strong underline">
               Knowledge base
+            </Link>
+            <Link href="/admin/settings/mfa" className="text-brand-lavender-strong underline">
+              Enable MFA
             </Link>
             <a
               href={`/admin/leads/export?${exportQuery.toString()}`}
@@ -47,7 +52,36 @@ export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
             >
               Export CSV
             </a>
+            <form action="/admin/logout" method="post">
+              <button
+                type="submit"
+                className="rounded-md bg-white px-3 py-1.5 font-semibold ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+              >
+                Log out
+              </button>
+            </form>
           </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-3 text-sm">
+          <form action={retryFailedEmailsAction}>
+            <button
+              type="submit"
+              className="rounded-md bg-white px-3 py-1.5 font-semibold ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+            >
+              Retry failed notification emails
+            </button>
+          </form>
+          {process.env.LEAD_RETENTION_DAYS && (
+            <form action={purgeExpiredLeadsAction}>
+              <button
+                type="submit"
+                className="rounded-md bg-white px-3 py-1.5 font-semibold ring-1 ring-brand-ink/15 hover:bg-brand-bg"
+              >
+                Purge expired leads
+              </button>
+            </form>
+          )}
         </div>
 
         <form method="get" className="mt-6 flex flex-wrap gap-3 text-sm">

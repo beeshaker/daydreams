@@ -10,7 +10,9 @@ import { Joystick } from "./Joystick";
 import { ContentPanel, type DaydreamsContent } from "./ContentPanel";
 import { CelebrationBanner } from "./CelebrationBanner";
 import { ColorPicker, SPRAY_COLORS } from "./ColorPicker";
+import { GameUnavailable } from "./GameUnavailable";
 import { useWalkingInput } from "@/hooks/useWalkingInput";
+import { canUseWebGL2 } from "@/lib/daydreams/webgl";
 import { getCamera, type Breakpoint } from "@/lib/daydreams/destinationLayouts";
 import { destinations } from "@/lib/daydreams/destinations";
 import type { DestinationId, DaydreamsGameState } from "@/lib/daydreams/types";
@@ -21,7 +23,51 @@ const CELEBRATION_DURATION_MS = 5000;
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 639px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-export function DaydreamsGame({ content }: { content: DaydreamsContent }) {
+export function DaydreamsGame({
+  content,
+  turnstileSiteKey,
+}: {
+  content: DaydreamsContent;
+  turnstileSiteKey: string;
+}) {
+  const [webglAvailable, setWebglAvailable] = useState<boolean | null>(null);
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setWebglAvailable(canUseWebGL2()));
+    return () => cancelAnimationFrame(frame);
+  }, [attempt]);
+
+  if (webglAvailable === null) {
+    return (
+      <div className="flex min-h-dvh flex-col items-center justify-center gap-5 bg-brand-bg px-6 text-brand-ink">
+        <p role="status">Loading Daydreams…</p>
+        <TraditionalToggle prominent />
+      </div>
+    );
+  }
+
+  if (!webglAvailable) {
+    return (
+      <GameUnavailable
+        onRetry={() => {
+          setWebglAvailable(null);
+          setAttempt((value) => value + 1);
+        }}
+      />
+    );
+  }
+
+  return <PlayableDaydreamsGame content={content} turnstileSiteKey={turnstileSiteKey} />;
+}
+
+function PlayableDaydreamsGame({
+  content,
+  turnstileSiteKey,
+}: {
+  content: DaydreamsContent;
+  turnstileSiteKey: string;
+}) {
   const { inputRef, setJoystickVector, releaseJoystick } = useWalkingInput();
 
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
@@ -131,8 +177,9 @@ export function DaydreamsGame({ content }: { content: DaydreamsContent }) {
       </Canvas>
 
       {gameState.status === "loading" && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-brand-bg">
-          <p className="text-brand-ink">Loading Daydreams…</p>
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-brand-bg px-6">
+          <p role="status" className="text-brand-ink">Loading Daydreams…</p>
+          <TraditionalToggle prominent />
         </div>
       )}
 
@@ -173,6 +220,7 @@ export function DaydreamsGame({ content }: { content: DaydreamsContent }) {
         destinationId={gameState.activeDestinationId}
         content={content}
         onClose={handleClosePanel}
+        turnstileSiteKey={turnstileSiteKey}
       />
 
       {showCelebration && <CelebrationBanner onDismiss={() => setCelebrationDismissed(true)} />}

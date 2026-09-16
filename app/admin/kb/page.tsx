@@ -5,6 +5,8 @@ export const metadata = {
   title: "Admin — Knowledge Base",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminKbPage() {
   let documents: Awaited<ReturnType<typeof listKbDocuments>> = [];
   let loadError: string | null = null;

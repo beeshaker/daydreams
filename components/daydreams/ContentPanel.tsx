@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { destinations } from "@/lib/daydreams/destinations";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import type {
   DestinationId,
   Program,
@@ -29,32 +30,17 @@ export function ContentPanel({
   destinationId,
   content,
   onClose,
+  turnstileSiteKey,
 }: {
   destinationId: DestinationId | null;
   content: DaydreamsContent;
   onClose: () => void;
+  turnstileSiteKey: string;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const open = destinationId !== null;
 
-  useEffect(() => {
-    if (open) {
-      previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
-      panelRef.current?.focus();
-    } else {
-      previouslyFocusedRef.current?.focus();
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, onClose]);
+  useFocusTrap({ active: open, containerRef: panelRef, onEscape: onClose });
 
   if (!open) return null;
 
@@ -88,7 +74,9 @@ export function ContentPanel({
         {destinationId === "testimonials" && (
           <TestimonialsSection testimonials={content.testimonials} />
         )}
-        {destinationId === "visit" && <BookAVisitForm source="game" />}
+        {destinationId === "visit" && (
+          <BookAVisitForm source="game" turnstileSiteKey={turnstileSiteKey} />
+        )}
       </div>
     </div>
   );

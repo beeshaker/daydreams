@@ -1,7 +1,8 @@
 import type { StoredLead } from "./store";
+import { fetchWithTimeout, TimeoutError } from "@/lib/http/fetchWithTimeout";
 
 const STAFF_NOTIFICATION_EMAIL =
-  process.env.LEADS_NOTIFICATION_EMAIL ?? "hello@daydreamsanddumbbells.com";
+  process.env.LEADS_NOTIFICATION_EMAIL ?? "daydreamsanddumbbells@gmail.com";
 
 function escapeHtml(value: string): string {
   return value
@@ -32,29 +33,33 @@ export async function sendLeadNotification(
   }
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    const response = await fetchWithTimeout(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: process.env.LEADS_FROM_EMAIL ?? "leads@daydreamsanddumbbells.com",
+          to: STAFF_NOTIFICATION_EMAIL,
+          subject: `New ${lead.leadType} lead — ${lead.parentName}`,
+          html: `
+            <p>New lead from <strong>${escapeHtml(lead.source)}</strong>.</p>
+            <ul>
+              <li>Name: ${escapeHtml(lead.parentName)}</li>
+              <li>Email: ${escapeHtml(lead.email)}</li>
+              ${lead.phone ? `<li>Phone: ${escapeHtml(lead.phone)}</li>` : ""}
+              ${lead.childAge ? `<li>Child age: ${escapeHtml(lead.childAge)}</li>` : ""}
+              ${lead.preferredContact ? `<li>Preferred contact: ${escapeHtml(lead.preferredContact)}</li>` : ""}
+            </ul>
+            ${lead.message ? `<p>Message: ${escapeHtml(lead.message)}</p>` : ""}
+          `,
+        }),
       },
-      body: JSON.stringify({
-        from: process.env.LEADS_FROM_EMAIL ?? "leads@daydreamsanddumbbells.com",
-        to: STAFF_NOTIFICATION_EMAIL,
-        subject: `New ${lead.leadType} lead — ${lead.parentName}`,
-        html: `
-          <p>New lead from <strong>${escapeHtml(lead.source)}</strong>.</p>
-          <ul>
-            <li>Name: ${escapeHtml(lead.parentName)}</li>
-            <li>Email: ${escapeHtml(lead.email)}</li>
-            ${lead.phone ? `<li>Phone: ${escapeHtml(lead.phone)}</li>` : ""}
-            ${lead.childAge ? `<li>Child age: ${escapeHtml(lead.childAge)}</li>` : ""}
-            ${lead.preferredContact ? `<li>Preferred contact: ${escapeHtml(lead.preferredContact)}</li>` : ""}
-          </ul>
-          ${lead.message ? `<p>Message: ${escapeHtml(lead.message)}</p>` : ""}
-        `,
-      }),
-    });
+      9000,
+    );
 
     if (!response.ok) {
       console.error(`[leads] Resend responded ${response.status} for lead ${lead.id}`);
@@ -63,6 +68,10 @@ export async function sendLeadNotification(
 
     return "sent";
   } catch (error) {
+    if (error instanceof TimeoutError) {
+      console.error(`[leads] Resend request timed out for lead ${lead.id}`);
+      return "failed";
+    }
     console.error(`[leads] Failed to send notification for lead ${lead.id}`, error);
     return "failed";
   }
