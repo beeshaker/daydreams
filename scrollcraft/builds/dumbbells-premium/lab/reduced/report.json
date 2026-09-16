@@ -1,0 +1,1480 @@
+{
+  "doc": {
+    "height": 12713,
+    "vh": 900,
+    "acts": [
+      "scrub",
+      "pan",
+      "flow",
+      "flow",
+      "flow",
+      "pin"
+    ],
+    "world": null
+  },
+  "report": [
+    {
+      "i": 0,
+      "y": 0,
+      "pct": 0,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Dumbbells · strength & fitness Your jour",
+          "dir": "light-on-dark",
+          "worst": 9.65,
+          "mean": 16.37
+        }
+      ],
+      "cues": [
+        {
+          "t": "Dumbbells · strength & fitness Your journey st",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        4860,
+        11543
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "#0b0908"
+    },
+    {
+      "i": 1,
+      "y": 79,
+      "pct": 1,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Dumbbells · strength & fitness Your jour",
+          "dir": "light-on-dark",
+          "worst": 9.65,
+          "mean": 16.37
+        }
+      ],
+      "cues": [
+        {
+          "t": "Dumbbells · strength & fitness Your journey st",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        4781,
+        11464
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 2,
+      "y": 840,
+      "pct": 7,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Dumbbells · strength & fitness Your jour",
+          "dir": "light-on-dark",
+          "worst": 9.65,
+          "mean": 16.37
+        }
+      ],
+      "cues": [
+        {
+          "t": "Dumbbells · strength & fitness Your journey st",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        4020,
+        10703
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 3,
+      "y": 1600,
+      "pct": 14,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        3260,
+        9943
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 4,
+      "y": 2360,
+      "pct": 20,
+      "settled": true,
+      "contrast": [],
+      "cues": [
+        {
+          "t": "The difference That's what one real rep sounds",
+          "o": 0.13
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        2500,
+        9183
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 5,
+      "y": 3120,
+      "pct": 26,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "The difference That's what one real rep ",
+          "dir": "light-on-dark",
+          "worst": 14.42,
+          "mean": 16.96
+        }
+      ],
+      "cues": [
+        {
+          "t": "The difference That's what one real rep sounds",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        1740,
+        8423
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 6,
+      "y": 3881,
+      "pct": 33,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 1
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        0,
+        979,
+        7662
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 7,
+      "y": 4050,
+      "pct": 34,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0.9
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        -90,
+        810,
+        7493
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 8,
+      "y": 4185,
+      "pct": 35,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0.75
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        -225,
+        675,
+        7358
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 9,
+      "y": 4320,
+      "pct": 37,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0.6
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "scrub",
+      "stages": [
+        -360,
+        540,
+        7223
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 10,
+      "y": 4921,
+      "pct": 42,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -961,
+        0,
+        6622
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 11,
+      "y": 5509,
+      "pct": 47,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -1549,
+        0,
+        6034
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,12,11)"
+    },
+    {
+      "i": 12,
+      "y": 6096,
+      "pct": 52,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -2136,
+        0,
+        5447
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(18,14,12)"
+    },
+    {
+      "i": 13,
+      "y": 6684,
+      "pct": 57,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -2724,
+        0,
+        4859
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(18,14,12)"
+    },
+    {
+      "i": 14,
+      "y": 7271,
+      "pct": 62,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -3311,
+        0,
+        4272
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(18,14,12)"
+    },
+    {
+      "i": 15,
+      "y": 7859,
+      "pct": 67,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -3899,
+        0,
+        3684
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(18,14,12)"
+    },
+    {
+      "i": 16,
+      "y": 7955,
+      "pct": 67,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -3995,
+        -35,
+        3588
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(18,14,12)"
+    },
+    {
+      "i": 17,
+      "y": 8296,
+      "pct": 70,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pan",
+      "stages": [
+        -4336,
+        -376,
+        3247
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(17,13,12)"
+    },
+    {
+      "i": 18,
+      "y": 8637,
+      "pct": 73,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -4677,
+        -717,
+        2906
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 19,
+      "y": 8825,
+      "pct": 75,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -4865,
+        -905,
+        2718
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 20,
+      "y": 8977,
+      "pct": 76,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5017,
+        -1057,
+        2566
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 21,
+      "y": 9129,
+      "pct": 77,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5169,
+        -1209,
+        2414
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 22,
+      "y": 9318,
+      "pct": 79,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5358,
+        -1398,
+        2225
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 23,
+      "y": 9433,
+      "pct": 80,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5473,
+        -1513,
+        2110
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 24,
+      "y": 9517,
+      "pct": 81,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5557,
+        -1597,
+        2026
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 25,
+      "y": 9659,
+      "pct": 82,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5699,
+        -1739,
+        1884
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(16,13,12)"
+    },
+    {
+      "i": 26,
+      "y": 9736,
+      "pct": 82,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5776,
+        -1816,
+        1807
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(14,11,10)"
+    },
+    {
+      "i": 27,
+      "y": 9914,
+      "pct": 84,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -5954,
+        -1994,
+        1629
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(14,11,10)"
+    },
+    {
+      "i": 28,
+      "y": 10040,
+      "pct": 85,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -6080,
+        -2120,
+        1503
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(14,11,10)"
+    },
+    {
+      "i": 29,
+      "y": 10311,
+      "pct": 87,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -6351,
+        -2391,
+        1232
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(14,11,10)"
+    },
+    {
+      "i": 30,
+      "y": 10344,
+      "pct": 88,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -6384,
+        -2424,
+        1199
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(14,11,10)"
+    },
+    {
+      "i": 31,
+      "y": 10708,
+      "pct": 91,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "flow",
+      "stages": [
+        -6748,
+        -2788,
+        835
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 32,
+      "y": 11105,
+      "pct": 94,
+      "settled": true,
+      "contrast": [],
+      "cues": [],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7145,
+        -3185,
+        438
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 33,
+      "y": 11502,
+      "pct": 97,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.39
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 0.91
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7542,
+        -3582,
+        41
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 34,
+      "y": 11549,
+      "pct": 98,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7589,
+        -3629,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 35,
+      "y": 11600,
+      "pct": 98,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7640,
+        -3680,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 36,
+      "y": 11652,
+      "pct": 99,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7692,
+        -3732,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 37,
+      "y": 11704,
+      "pct": 99,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7744,
+        -3784,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 38,
+      "y": 11756,
+      "pct": 100,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7796,
+        -3836,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 39,
+      "y": 11808,
+      "pct": 100,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7848,
+        -3888,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    },
+    {
+      "i": 40,
+      "y": 11813,
+      "pct": 100,
+      "settled": true,
+      "contrast": [
+        {
+          "t": "Your journey starts now. For real this t",
+          "dir": "light-on-dark",
+          "worst": 8.44,
+          "mean": 16.38
+        }
+      ],
+      "cues": [
+        {
+          "t": "Your journey starts now. For real this time. C",
+          "o": 1
+        }
+      ],
+      "clips": [
+        {
+          "painted": false,
+          "t": 0,
+          "dur": 0,
+          "vis": 0
+        }
+      ],
+      "rails": [
+        0
+      ],
+      "wipes": [],
+      "act": "pin",
+      "stages": [
+        -7853,
+        -3893,
+        0
+      ],
+      "segs": [],
+      "custom": [],
+      "customHold": false,
+      "seg": null,
+      "segp": null,
+      "bg": "rgb(11,9,8)"
+    }
+  ],
+  "consoleErrors": [],
+  "failed": []
+}

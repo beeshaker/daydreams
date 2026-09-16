@@ -2,6 +2,13 @@ import type { StaffMember } from "@/lib/daydreams/types";
 
 export const trainers: StaffMember[] = [
   {
+    id: "satnam",
+    name: "Satnam Aildasani Thomas",
+    role: "Founder & Director",
+    bio: "Satnam Aildasani Thomas is a mum, wife, and wellness coach — and the founder behind Daydreams and Dumbbells.\n\nThe idea was born out of a very real need: after having her daughter, Nina, Satnam went looking for a place where she could work out, get a massage, or simply enjoy a hot coffee without the weight of mum guilt. She wanted somewhere Nina could take part in her own activities too, whether that was arts and crafts or sensory play, and she was tired of criss-crossing town just to piece together childcare and fitness separately. Every workout came with a countdown clock, and every outing meant sacrificing something else.\n\nThat frustration became the foundation for Daydreams and Dumbbells: a single space where parents and children could each have what they needed, at the same time, without compromise. Today, Satnam leads that vision as Director of Daydreams and Dumbbells, building a safe, judgment-free environment where wellness and parenthood aren't in competition — they coexist.\n\nAs a parent now, you can have your me-time, guilt-free.",
+    accentColor: "#2e8b6f",
+  },
+  {
     id: "james",
     name: "James Benoni Nyambok",
     role: "Head Coach | Fitness Professional | Movement & Performance Enthusiast",

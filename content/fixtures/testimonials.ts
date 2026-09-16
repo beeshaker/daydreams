@@ -22,4 +22,11 @@ export const testimonials: Testimonial[] = [
     author: "Kenji T.",
     relation: "Parent of a 3-year-old",
   },
+  {
+    id: "t4",
+    quote:
+      "Me & my friend & our babies spent a great day @daydreams & dumbbells. This place is amazing, it has ideally everything that a mom with a baby can need. Really a perfect idea.",
+    author: "Satnam Aildasani",
+    relation: "Parent, Nairobi mums' group",
+  },
 ];
