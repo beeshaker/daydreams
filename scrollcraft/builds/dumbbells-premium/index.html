@@ -1,36 +1,16 @@
-import type { Metadata } from "next";
-import Script from "next/script";
-
-/**
- * The premium scroll-driven Dumbbells page, built with the scroll-craft
- * skill (see scrollcraft/builds/dumbbells-premium/ for the source build,
- * BRIEF.md and lab/ verification screenshots). This replaces the previous
- * card-and-section version of this route.
- *
- * The page is a single self-contained document (its own engine, its own
- * CSS tokens) rather than a normal composition of this app's shared
- * section components, so it's wired in here via resource-hoisted <link>/
- * <style> tags and raw HTML rather than converted into JSX piece by piece —
- * that conversion would risk drifting from the verified build. The static
- * assets (video, images, the scrollcraft engine) live in
- * public/dumbbells-premium/, copied from the build folder; edit the build
- * folder first, then re-copy, rather than editing the strings below by hand
- * for anything more than a copy tweak.
- *
- * The booking form below posts to this same app's /api/leads route (see
- * app/api/leads/route.ts) — now that this page is served from this app,
- * that submission is live, using the TURNSTILE_SITE_KEY committed in this
- * repo's .env, which is Cloudflare's public *test* key. Swap it for the
- * real production site key before this goes live for real visitors.
- */
-
-export const metadata: Metadata = {
-  title: "Dumbbells — Your journey starts now",
-  description:
-    "Strength training for people with a life outside the gym. Real coaches, real classes, one honest place to start.",
-};
-
-const PAGE_STYLE = `
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dumbbells · Your journey starts now</title>
+<meta name="description" content="Strength training for people with a life outside the gym. Real coaches, real classes, one honest place to start.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b0908'/><rect x='7' y='14' width='18' height='4' rx='1.5' fill='%23c4214b'/><rect x='4' y='11' width='4' height='10' rx='1' fill='%23c4214b'/><rect x='24' y='11' width='4' height='10' rx='1' fill='%23c4214b'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
   :root {
     --sc-canvas:     #0b0908;
     --sc-surface:    #17110f;
@@ -48,7 +28,7 @@ const PAGE_STYLE = `
      in-page section links, a cross-brand link, sticky + opaque + blurred)
      rebuilt in this page's own dark/crimson tokens rather than importing
      that component, since this page is raw HTML (see file-level comment
-     above) to avoid drifting from the verified build. */
+     in app/dumbbells/page.tsx) to avoid drifting from this verified build. */
   .nav {
     position: sticky; top: 0; z-index: var(--sc-z-chrome);
     background: color-mix(in oklab, var(--sc-canvas) 92%, transparent);
@@ -345,16 +325,17 @@ const PAGE_STYLE = `
         transparent 94%);
     }
   }
-`;
+</style>
+</head>
+<body>
 
-const PAGE_BODY = `
 <span data-sc-progress></span>
 <div class="sc-grain" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="nav__row">
     <a class="nav__mark" href="#top" aria-label="Dumbbells home">
-      <img class="nav__logo" src="/branding/logo.png" alt="">
+      <img class="nav__logo" src="assets/logo.png" alt="">
       <span>Dumbbells</span>
     </a>
     <div class="nav__actions">
@@ -388,8 +369,8 @@ const PAGE_BODY = `
   <!-- 1 · CONFIDENCE -> TRUST : one continuous scrub, two copy moments -->
   <section data-sc-act="scrub" data-sc-span="5.4" data-sc-dwell="0.26" data-sc-drift="#0b0908">
     <div data-sc-stage class="hero-stage">
-      <img class="sc-stage__poster" src="/dumbbells-premium/assets/hero-snatch-poster.webp" alt="">
-      <video data-sc-scrub data-sc-src="/dumbbells-premium/assets/hero-snatch.mp4" data-sc-src-mobile="/dumbbells-premium/assets/hero-snatch-m.mp4" playsinline muted
+      <img class="sc-stage__poster" src="assets/hero-snatch-poster.webp" alt="">
+      <video data-sc-scrub data-sc-src="assets/hero-snatch.mp4" data-sc-src-mobile="assets/hero-snatch-m.mp4" playsinline muted
              aria-label="A woman performing a dumbbell snatch, pulling the weight from the floor to a locked-out overhead catch, then lowering and dropping it to the floor as chalk bursts on impact, one continuous take"></video>
       <div class="hero-glow" data-sc-parallax="-1.1" aria-hidden="true"></div>
       <div class="sc-scrim sc-scrim--lead hero-scrim" aria-hidden="true"></div>
@@ -425,25 +406,25 @@ const PAGE_BODY = `
         </div>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-sunrise.webp" alt="A stationary bike lit by early morning window light in an empty studio"></div>
+          <div class="item__frame" data-sc-tilt="6"><img src="assets/class-sunrise.webp" alt="A stationary bike lit by early morning window light in an empty studio"></div>
           <h3>Sunrise Spin</h3>
           <p>Rhythm-driven cardio to start the day right. 6:00 AM.</p>
         </article>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-hiit.webp" alt="Battle ropes frozen mid-slam in a dark gym"></div>
+          <div class="item__frame" data-sc-tilt="6"><img src="assets/class-hiit.webp" alt="Battle ropes frozen mid-slam in a dark gym"></div>
           <h3>HIIT Bootcamp</h3>
           <p>High-energy intervals that build full-body power in 45 minutes. 5:30 PM.</p>
         </article>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-strength.webp" alt="A loaded barbell resting in a squat rack" style="object-position: 30% 55%;"></div>
+          <div class="item__frame" data-sc-tilt="6"><img src="assets/class-strength.webp" alt="A loaded barbell resting in a squat rack" style="object-position: 30% 55%;"></div>
           <h3>Strength Foundations</h3>
           <p>Barbell basics, coached one rep at a time. 7:00 AM.</p>
         </article>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-mobility.webp" alt="A foam roller and towel resting on a gym mat"></div>
+          <div class="item__frame" data-sc-tilt="6"><img src="assets/class-mobility.webp" alt="A foam roller and towel resting on a gym mat"></div>
           <h3>Mobility &amp; Recovery</h3>
           <p>Slow down, stretch out, move better. 7:30 PM.</p>
         </article>
@@ -505,7 +486,7 @@ const PAGE_BODY = `
        phone that used to sit in the closing copy now live in the footer. -->
   <section id="join" class="sc-section close" data-sc-act="flow" data-sc-drift="#0b0908">
     <div class="close-banner">
-      <img class="close-banner__img" src="/dumbbells-premium/assets/close-bg.webp" alt="" style="object-position: 50% 8%;">
+      <img class="close-banner__img" src="assets/close-bg.webp" alt="" style="object-position: 50% 8%;">
       <div class="close-banner__scrim" aria-hidden="true"></div>
       <div class="close-banner__copy sc-stack" data-sc-in data-sc-stagger="60">
         <h2 class="sc-display sc-display--lg">Your journey starts now. For real this time.</h2>
@@ -541,7 +522,7 @@ const PAGE_BODY = `
           <p class="lead-form__status" role="status" aria-live="polite"></p>
         </div>
 
-        <p class="lead-form__fallback">Prefer email or a call? <a href="mailto:daydreamsanddumbbells@gmail.com?subject=Book%20a%20Session">daydreamsanddumbbells@gmail.com</a> &middot; <a href="tel:+254180117040">0180 117040</a></p>
+        <p class="lead-form__fallback">Prefer email or a call? <a href="mailto:hello@daydreamsanddumbbells.com?subject=Book%20a%20Session">hello@daydreamsanddumbbells.com</a> &middot; <a href="tel:+15550102020">(555) 010-2020</a></p>
       </form>
     </div>
   </section>
@@ -556,14 +537,14 @@ const PAGE_BODY = `
     </div>
     <div class="site-foot__hours">
       <h3>Hours</h3>
-      <p>Mon &ndash; Fri<br><strong>8:30 AM &ndash; 6:00 PM</strong></p>
-      <p>Saturday<br><strong>9:00 AM &ndash; 1:00 PM</strong></p>
+      <p>Weekdays<br><strong>5:00 AM &ndash; 9:00 PM</strong></p>
+      <p>Weekends<br><strong>7:00 AM &ndash; 5:00 PM</strong></p>
     </div>
     <div class="site-foot__contact">
       <h3>Visit</h3>
-      <p>41 Gurviellia Grove, Nairobi</p>
-      <p><a href="tel:+254180117040">0180 117040</a></p>
-      <p><a href="mailto:daydreamsanddumbbells@gmail.com">daydreamsanddumbbells@gmail.com</a></p>
+      <p>123 Play Street, Suite B</p>
+      <p><a href="tel:+15550102020">(555) 010-2020</a></p>
+      <p><a href="mailto:hello@daydreamsanddumbbells.com">hello@daydreamsanddumbbells.com</a></p>
     </div>
   </div>
   <div class="site-foot__bottom">
@@ -574,157 +555,132 @@ const PAGE_BODY = `
     </nav>
   </div>
 </footer>
-`;
 
-const LOADOUT_SCRIPT = `
-(function () {
-  var acts = Array.prototype.slice.call(document.querySelectorAll('main > [data-sc-act]'));
-  var plates = Array.prototype.slice.call(document.querySelectorAll('[data-plate]'));
-  var label = document.querySelector('[data-loadout-label]');
-  var total = acts.length;
-  var ticking = false;
+<script src="scrollcraft.js"></script>
+<script>ScrollCraft.mount(document.body);</script>
+<script>
+  // The Loadout: a fixed barbell that racks one plate per act the visitor
+  // reaches. Bespoke to this page, reads act boundaries directly off the
+  // DOM rather than any engine internal.
+  (function () {
+    var acts = Array.prototype.slice.call(document.querySelectorAll('main > [data-sc-act]'));
+    var plates = Array.prototype.slice.call(document.querySelectorAll('[data-plate]'));
+    var label = document.querySelector('[data-loadout-label]');
+    var total = acts.length;
+    var ticking = false;
 
-  function update() {
-    ticking = false;
-    var reached = 0;
-    var vh = window.innerHeight;
-    for (var i = 0; i < acts.length; i++) {
-      var r = acts[i].getBoundingClientRect();
-      if (r.top <= vh * 0.55) reached = i + 1;
-    }
-    for (var p = 0; p < plates.length; p++) {
-      plates[p].classList.toggle('is-loaded', p < reached);
-    }
-    if (label) {
-      label.textContent = reached === 0 ? 'Ready' : 'Set ' + reached + ' of ' + total;
-    }
-  }
-
-  function onScroll() {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
-})();
-`;
-
-const LEAD_FORM_SCRIPT = `
-(function () {
-  var TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
-  var turnstileToken = '';
-
-  var form = document.getElementById('lead-form');
-  if (!form) return;
-  var statusEl = form.querySelector('.lead-form__status');
-  var submitBtn = form.querySelector('button[type="submit"]');
-
-  if (TURNSTILE_SITE_KEY) {
-    var s = document.createElement('script');
-    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    s.async = true;
-    s.defer = true;
-    s.onload = function () {
-      var container = document.getElementById('turnstile-container');
-      if (container && window.turnstile) {
-        window.turnstile.render(container, {
-          sitekey: TURNSTILE_SITE_KEY,
-          callback: function (token) { turnstileToken = token; }
-        });
+    function update() {
+      ticking = false;
+      var reached = 0;
+      var vh = window.innerHeight;
+      for (var i = 0; i < acts.length; i++) {
+        var r = acts[i].getBoundingClientRect();
+        if (r.top <= vh * 0.55) reached = i + 1;
       }
-    };
-    document.head.appendChild(s);
-  }
+      for (var p = 0; p < plates.length; p++) {
+        plates[p].classList.toggle('is-loaded', p < reached);
+      }
+      if (label) {
+        label.textContent = reached === 0 ? 'Ready' : 'Set ' + reached + ' of ' + total;
+      }
+    }
 
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    var data = new FormData(form);
-    var consentEl = form.querySelector('input[name="consent"]');
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
 
-    var payload = {
-      leadType: 'gym-interest',
-      source: 'traditional-site',
-      parentName: String(data.get('parentName') || ''),
-      email: String(data.get('email') || ''),
-      phone: String(data.get('phone') || '') || undefined,
-      preferredContact: String(data.get('preferredContact') || '') || undefined,
-      message: String(data.get('message') || '') || undefined,
-      consent: !!(consentEl && consentEl.checked),
-      companyWebsite: String(data.get('companyWebsite') || ''),
-      turnstileToken: turnstileToken || undefined
-    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+</script>
+<script>
+  // Real lead form, posting to the same /api/leads endpoint the live
+  // Next.js app uses. Only succeeds when this page is served same-origin
+  // with that app (fetch to a relative path); until then a network/CORS
+  // failure is expected and the form falls back to showing the mailto/tel
+  // line already printed below it, rather than pretending to succeed.
+  //
+  // TURNSTILE_SITE_KEY below is Cloudflare's public test key
+  // (1x00000000000000000000AA, documented at
+  // developers.cloudflare.com/turnstile/troubleshooting/testing), copied
+  // from this repo's .env. Site keys are meant to be public and safe to
+  // embed client-side. Swap this for the real production site key before
+  // this page goes live.
+  (function () {
+    var TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+    var turnstileToken = '';
 
-    submitBtn.disabled = true;
-    statusEl.textContent = 'Sending…';
-    statusEl.removeAttribute('data-state');
+    var form = document.getElementById('lead-form');
+    if (!form) return;
+    var statusEl = form.querySelector('.lead-form__status');
+    var submitBtn = form.querySelector('button[type="submit"]');
 
-    fetch('/api/leads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-      .then(function (res) {
-        return res.json().then(function (body) { return { ok: res.ok, body: body }; });
-      })
-      .then(function (result) {
-        submitBtn.disabled = false;
-        if (result.ok && result.body && result.body.success) {
-          statusEl.textContent = "Thanks — we've got your info. We'll reach out soon.";
-          statusEl.setAttribute('data-state', 'success');
-          form.reset();
-        } else {
-          statusEl.textContent = (result.body && result.body.error) || 'Something went wrong. Please try the email or phone below instead.';
-          statusEl.setAttribute('data-state', 'error');
+    if (TURNSTILE_SITE_KEY) {
+      var s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true;
+      s.defer = true;
+      s.onload = function () {
+        var container = document.getElementById('turnstile-container');
+        if (container && window.turnstile) {
+          window.turnstile.render(container, {
+            sitekey: TURNSTILE_SITE_KEY,
+            callback: function (token) { turnstileToken = token; }
+          });
         }
+      };
+      document.head.appendChild(s);
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      var consentEl = form.querySelector('input[name="consent"]');
+
+      var payload = {
+        leadType: 'gym-interest',
+        source: 'traditional-site',
+        parentName: String(data.get('parentName') || ''),
+        email: String(data.get('email') || ''),
+        phone: String(data.get('phone') || '') || undefined,
+        preferredContact: String(data.get('preferredContact') || '') || undefined,
+        message: String(data.get('message') || '') || undefined,
+        consent: !!(consentEl && consentEl.checked),
+        companyWebsite: String(data.get('companyWebsite') || ''),
+        turnstileToken: turnstileToken || undefined
+      };
+
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Sending…';
+      statusEl.removeAttribute('data-state');
+
+      fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       })
-      .catch(function () {
-        submitBtn.disabled = false;
-        statusEl.textContent = "Couldn't reach the booking system from here. Please use the email or phone below instead.";
-        statusEl.setAttribute('data-state', 'error');
-      });
-  });
-})();
-`;
-
-export default function DumbbellsPage() {
-  return (
-    <>
-      <link
-        rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b0908'/><rect x='7' y='14' width='18' height='4' rx='1.5' fill='%23c4214b'/><rect x='4' y='11' width='4' height='10' rx='1' fill='%23c4214b'/><rect x='24' y='11' width='4' height='10' rx='1' fill='%23c4214b'/></svg>"
-      />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Geist:wght@400;500;600&display=swap"
-        rel="stylesheet"
-      />
-      <link rel="stylesheet" href="/dumbbells-premium/scrollcraft.css" />
-      <style dangerouslySetInnerHTML={{ __html: PAGE_STYLE }} />
-
-      <div dangerouslySetInnerHTML={{ __html: PAGE_BODY }} />
-
-      {/* A plain <Script src> here races the mount call below (Next loads
-          external afterInteractive scripts asynchronously, so execution
-          order between separate Script tags isn't guaranteed). Load and
-          mount from one inline script instead, sequenced with onload. */}
-      <Script id="scrollcraft-boot" strategy="afterInteractive">
-        {`
-          (function () {
-            var s = document.createElement('script');
-            s.src = '/dumbbells-premium/scrollcraft.js';
-            s.onload = function () { window.ScrollCraft.mount(document.body); };
-            document.head.appendChild(s);
-          })();
-        `}
-      </Script>
-      <Script id="loadout" strategy="afterInteractive">
-        {LOADOUT_SCRIPT}
-      </Script>
-      <Script id="lead-form" strategy="afterInteractive">
-        {LEAD_FORM_SCRIPT}
-      </Script>
-    </>
-  );
-}
+        .then(function (res) {
+          return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+        })
+        .then(function (result) {
+          submitBtn.disabled = false;
+          if (result.ok && result.body && result.body.success) {
+            statusEl.textContent = "Thanks — we've got your info. We'll reach out soon.";
+            statusEl.setAttribute('data-state', 'success');
+            form.reset();
+          } else {
+            statusEl.textContent = (result.body && result.body.error) || 'Something went wrong. Please try the email or phone below instead.';
+            statusEl.setAttribute('data-state', 'error');
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          statusEl.textContent = "Couldn't reach the booking system from here. Please use the email or phone below instead.";
+          statusEl.setAttribute('data-state', 'error');
+        });
+    });
+  })();
+</script>
+</body>
+</html>
