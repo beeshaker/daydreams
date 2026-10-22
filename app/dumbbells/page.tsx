@@ -91,6 +91,13 @@ const PAGE_STYLE = `
   .nav__links a { flex-shrink: 0; padding: .2rem 0; color: var(--sc-ink-soft); text-decoration: none; }
   .nav__links a:hover { color: var(--sc-ink); }
 
+  /* Pinned stages are a full viewport tall and stick at top:0, so the sticky
+     nav above covers their top and pushes their bottom (where the hero copy
+     and buttons sit) off-screen. Stick them under the nav instead and shrink
+     them by its height. --nav-h is measured in the boot script below; the
+     fallback is the desktop nav height. */
+  .sc-stage { top: var(--nav-h, 7.8rem); height: calc(100svh - var(--nav-h, 7.8rem)); }
+
   /* ------------------------------------------------------------- hero */
   .hero-stage { background: radial-gradient(120% 90% at 72% 30%, #241413 0%, #0b0908 62%); overflow: hidden; }
   .hero-glow {
@@ -167,18 +174,12 @@ const PAGE_STYLE = `
   .rail__note p { margin: 0 0 var(--sc-4); }
 
   /* -------------------------------------------------------- warmth */
-  .quotes { display: grid; gap: var(--sc-8); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .quotes { max-width: 44rem; display: grid; gap: var(--sc-8); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
   .quote blockquote { margin: 0; font-family: var(--sc-font-display); font-size: var(--sc-t-xl); font-weight: 600; line-height: var(--sc-leading-tight); color: var(--sc-ink); }
   .quote cite { display: block; margin-top: var(--sc-4); font-style: normal; font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
 
-  /* ------------------------------------------------- schedule / warmth glow */
-  .schedule, .warmth { position: relative; overflow: clip; }
-  .schedule-glow {
-    position: absolute; inset: -30% -10%; z-index: -1; pointer-events: none;
-    background: radial-gradient(42% 55% at 82% 30%,
-      color-mix(in oklab, var(--sc-accent) 20%, transparent), transparent 70%);
-    will-change: transform;
-  }
+  /* ---------------------------------------------------------- warmth glow */
+  .warmth { position: relative; overflow: clip; }
   .warmth-glow {
     position: absolute; inset: -30% -10%; z-index: -1; pointer-events: none;
     background: radial-gradient(46% 60% at 18% 65%,
@@ -212,19 +213,6 @@ const PAGE_STYLE = `
     .close-photo { left: 0; opacity: .35; mask-image: linear-gradient(to bottom, transparent, #000 30%); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%); }
     .close-content { max-width: none; }
   }
-
-  /* ----------------------------------------------------------- schedule */
-  .schedule-list {
-    margin-top: var(--sc-8); max-width: 34rem; list-style: none; padding: 0;
-    border-top: 1px solid var(--sc-hairline);
-  }
-  .schedule-list li {
-    display: flex; justify-content: space-between; gap: var(--sc-4);
-    padding: var(--sc-4) 0; border-bottom: 1px solid var(--sc-hairline);
-    font-size: var(--sc-t-base);
-  }
-  .schedule-time { color: var(--sc-accent); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .schedule-activity { color: var(--sc-ink-soft); text-align: right; }
 
   /* ---------------------------------------------------------- lead form */
   .lead-form { margin-top: var(--sc-8); max-width: 40rem; }
@@ -277,7 +265,6 @@ const PAGE_STYLE = `
   .lead-form--compact .lead-form__actions { margin-top: var(--sc-5); }
   @media (max-width: 640px) {
     .lead-form__grid { grid-template-columns: 1fr; }
-    .schedule-activity { text-align: right; max-width: 60%; }
   }
 
   /* --------------------------------------------------------- site-foot */
@@ -361,6 +348,13 @@ const PAGE_STYLE = `
         transparent 94%);
     }
   }
+  /* The display sizes scale with width only, so a wide-but-short window
+     (a laptop with a browser toolbar) gets a headline too tall for the stage
+     and the copy runs up under the nav. Cap them by height as well. */
+  @media (min-width: 861px) {
+    .hero-copy h1 { font-size: min(var(--sc-t-4xl), 11svh); }
+    .turn-copy h2 { font-size: min(var(--sc-t-3xl), 8svh); }
+  }
 `;
 
 const PAGE_BODY = `
@@ -380,7 +374,6 @@ const PAGE_BODY = `
   </div>
   <nav class="nav__links" aria-label="Dumbbells sections">
     <a href="#range">Classes</a>
-    <a href="#schedule">Schedule</a>
     <a href="#members">Members</a>
     <a href="#join">Book</a>
   </nav>
@@ -437,58 +430,38 @@ const PAGE_BODY = `
       <div class="rail" data-sc-pan="0.06">
         <div class="rail__lead sc-stack">
           <h2 class="sc-display sc-display--md">Pick your set.</h2>
-          <p class="sc-body">Four classes, run by four coaches who actually know your name.</p>
+          <p class="sc-body">A few of the classes on our weekly plan, run by coaches who actually know your name.</p>
         </div>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-sunrise.webp" alt="A stationary bike lit by early morning window light in an empty studio"></div>
-          <h3>Sunrise Spin</h3>
-          <p>Rhythm-driven cardio to start the day right. 6:00 AM.</p>
+          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-sunrise.webp" alt="A stationary bike in the spin room"></div>
+          <h3>Spin</h3>
+          <p>High-energy rides in our dedicated spin room, most days of the week.</p>
         </article>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-hiit.webp" alt="Battle ropes frozen mid-slam in a dark gym"></div>
-          <h3>HIIT Bootcamp</h3>
-          <p>High-energy intervals that build full-body power in 45 minutes. 5:30 PM.</p>
+          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/gym-floor.webp" alt="The Dumbbells gym floor, with a dumbbell rack, benches and a cable machine"></div>
+          <h3>Functional &amp; CrossFit</h3>
+          <p>Coached full-body strength and conditioning you can use outside the gym.</p>
         </article>
 
         <article class="item">
-          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-strength.webp" alt="A loaded barbell resting in a squat rack" style="object-position: 30% 55%;"></div>
-          <h3>Strength Foundations</h3>
-          <p>Barbell basics, coached one rep at a time. 7:00 AM.</p>
+          <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/gym-machines.webp" alt="Strength machines and treadmills along the mirrored wall of the gym"></div>
+          <h3>Circuit</h3>
+          <p>Station to station around the gym floor, strength and cardio together.</p>
         </article>
 
         <article class="item">
           <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-mobility.webp" alt="A foam roller and towel resting on a gym mat"></div>
-          <h3>Mobility &amp; Recovery</h3>
-          <p>Slow down, stretch out, move better. 7:30 PM.</p>
+          <h3>Mobility</h3>
+          <p>Slow down, stretch out, move better.</p>
         </article>
 
         <div class="rail__note sc-stack">
-          <p class="sc-body">Seven classes run every weekday, mornings through evenings.</p>
-          <a class="btn-ghost" href="#schedule">See the full week</a>
+          <p class="sc-body">Plus Prenatal Pilates, Zumba, Barre and more through the week.</p>
+          <a class="btn-ghost" href="#join">Ask about a class</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- SCHEDULE : flow. Logistics, not experience, so it stays short and unpinned. -->
-  <section id="schedule" class="sc-section schedule" data-sc-act="flow" data-sc-drift="#100d0c">
-    <div class="schedule-glow" data-sc-parallax="-0.25" aria-hidden="true"></div>
-    <div class="sc-wrap">
-      <div class="sc-stack" data-sc-in data-sc-stagger="60">
-        <h2 class="sc-display sc-display--md">This week.</h2>
-        <p class="sc-body">Same seven classes, every weekday.</p>
-      </div>
-      <ul class="schedule-list" data-sc-in data-sc-stagger="30">
-        <li><span class="schedule-time">6:00 AM</span><span class="schedule-activity">Sunrise Spin</span></li>
-        <li><span class="schedule-time">7:00 AM</span><span class="schedule-activity">Strength Foundations</span></li>
-        <li><span class="schedule-time">9:00 AM</span><span class="schedule-activity">Mobility &amp; Recovery</span></li>
-        <li><span class="schedule-time">12:00 PM</span><span class="schedule-activity">HIIT Bootcamp (Lunch Express)</span></li>
-        <li><span class="schedule-time">5:30 PM</span><span class="schedule-activity">HIIT Bootcamp</span></li>
-        <li><span class="schedule-time">6:30 PM</span><span class="schedule-activity">Strength Foundations</span></li>
-        <li><span class="schedule-time">7:30 PM</span><span class="schedule-activity">Mobility &amp; Recovery</span></li>
-      </ul>
     </div>
   </section>
 
@@ -497,20 +470,12 @@ const PAGE_BODY = `
     <div class="warmth-glow" data-sc-parallax="-0.2" aria-hidden="true"></div>
     <div class="sc-wrap">
       <div class="sc-stack" data-sc-in data-sc-stagger="60">
-        <h2 class="sc-display sc-display--md">Real members. Real weeks.</h2>
+        <h2 class="sc-display sc-display--md">What families say.</h2>
       </div>
       <div class="quotes" data-sc-in data-sc-stagger="80" style="margin-top: var(--sc-8);">
         <div class="quote">
-          <blockquote>&ldquo;Dropping my kid off next door and walking straight into a 6am spin class is the only reason I still work out.&rdquo;</blockquote>
-          <cite>Priya S. &middot; Member &amp; Daydreams parent</cite>
-        </div>
-        <div class="quote">
-          <blockquote>&ldquo;Strength Foundations took me from intimidated by the squat rack to actually enjoying leg day.&rdquo;</blockquote>
-          <cite>Marcus T. &middot; Member, 1 year</cite>
-        </div>
-        <div class="quote">
-          <blockquote>&ldquo;I've tried four gyms in this city and this is the first one where the coaches actually watch your form instead of just counting reps.&rdquo;</blockquote>
-          <cite>Jordan K. &middot; Member, 8 months</cite>
+          <blockquote>&ldquo;Me &amp; my friend &amp; our babies spent a great day at Daydreams &amp; Dumbbells. This place is amazing, it has ideally everything that a mom with a baby can need. Really a perfect idea.&rdquo;</blockquote>
+          <cite>Sheima Elrasheid &middot; Mum, Nairobi mums' group</cite>
         </div>
       </div>
     </div>
@@ -558,7 +523,7 @@ const PAGE_BODY = `
           <p class="lead-form__status" role="status" aria-live="polite"></p>
         </div>
 
-        <p class="lead-form__fallback">Prefer email or a call? <a href="mailto:daydreamsanddumbbells@gmail.com?subject=Book%20a%20Session">daydreamsanddumbbells@gmail.com</a> &middot; <a href="tel:+254180117040">0180 117040</a></p>
+        <p class="lead-form__fallback">Prefer email or a call? <a href="mailto:daydreamsanddumbbells@gmail.com?subject=Book%20a%20Session">daydreamsanddumbbells@gmail.com</a> &middot; <a href="tel:+254180117040">0180 117040</a> &middot; <a href="tel:+254715634027">0715 634 027</a></p>
       </form>
     </div>
   </section>
@@ -578,8 +543,9 @@ const PAGE_BODY = `
     </div>
     <div class="site-foot__contact">
       <h3>Visit</h3>
-      <p>41 Gurviellia Grove, Nairobi</p>
+      <p>41 Greviellia Grove, Nairobi</p>
       <p><a href="tel:+254180117040">0180 117040</a></p>
+      <p><a href="tel:+254715634027">0715 634 027</a></p>
       <p><a href="mailto:daydreamsanddumbbells@gmail.com">daydreamsanddumbbells@gmail.com</a></p>
     </div>
   </div>
@@ -729,6 +695,14 @@ export default function DumbbellsPage() {
       <Script id="scrollcraft-boot" strategy="afterInteractive">
         {`
           (function () {
+            var nav = document.querySelector('.nav');
+            if (nav) {
+              var setNavH = function () {
+                document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+              };
+              setNavH();
+              if (window.ResizeObserver) new ResizeObserver(setNavH).observe(nav);
+            }
             var s = document.createElement('script');
             s.src = '/dumbbells-premium/scrollcraft.js';
             s.onload = function () { window.ScrollCraft.mount(document.body); };

@@ -17,7 +17,9 @@ export function SiteFooter({
             <p className="mt-2 text-sm text-brand-ink/70 zone-dark:text-white/70">{settings.tagline}</p>
             <address className="mt-4 space-y-1 text-sm not-italic text-brand-ink/70 zone-dark:text-white/70">
               <p>{settings.address}</p>
-              <p><a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`} className="hover:underline">{settings.phone}</a></p>
+              {settings.phones.map((phone) => (
+                <p key={phone}><a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="hover:underline">{phone}</a></p>
+              ))}
               <p><a href={`mailto:${settings.email}`} className="break-words hover:underline">{settings.email}</a></p>
               {settings.instagramUrl && (
                 <p>

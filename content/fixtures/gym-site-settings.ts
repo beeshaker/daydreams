@@ -3,8 +3,8 @@ import type { SiteSettings } from "@/lib/daydreams/types";
 export const gymSiteSettings: SiteSettings = {
   businessName: "Dumbbells",
   tagline: "Strength training for people with a life outside the gym.",
-  address: "41 Gurviellia Grove, Nairobi",
-  phone: "0180 117040",
+  address: "41 Greviellia Grove, Nairobi",
+  phones: ["0180 117040", "0715 634 027"],
   email: "daydreamsanddumbbells@gmail.com",
   hours: [
     { day: "Monday – Friday", open: "8:30 AM", close: "6:00 PM" },

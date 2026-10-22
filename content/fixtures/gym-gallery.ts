@@ -24,7 +24,7 @@ export const gymGallery: GalleryImage[] = [
   },
   {
     id: "gg4",
-    alt: "Sunrise spin class lit by string lights",
+    alt: "Spin class lit by string lights",
     category: "Spin",
     accentColor: "#b3542e",
     src: "/gallery/dumbbells-spin.webp",

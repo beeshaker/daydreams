@@ -21,13 +21,13 @@ import { HeroVideo } from "@/components/site/HeroVideo";
 
 export const metadata: Metadata = {
   title: "Daydreams — Daycare & Early Learning",
-  description: "Discover Daydreams daycare: explore our programs, meet the teachers, see our daily routine, and book a visit for your family.",
+  description: "Discover Daydreams daycare: explore our programs, meet the teachers, see our weekly activities, and book a visit for your family.",
 };
 
 const sections = [
   { id: "programs", label: "Programs" },
   { id: "staff", label: "Meet the Teachers" },
-  { id: "schedule", label: "Our Day" },
+  { id: "schedule", label: "Our Week" },
   { id: "gallery", label: "Gallery" },
   { id: "testimonials", label: "Parents Say" },
   { id: "questions", label: "FAQs" },
@@ -86,8 +86,8 @@ export default async function DaydreamsSitePage() {
             </section>
 
             <section id="schedule" className="scroll-mt-40">
-              <h2 className="font-baloo text-2xl text-brand-ink">Our Day</h2>
-              <div className="mt-5 max-w-md">
+              <h2 className="font-baloo text-2xl text-brand-ink">Our Week</h2>
+              <div className="mt-5">
                 <ScheduleSection schedule={schedule} />
               </div>
             </section>

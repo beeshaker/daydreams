@@ -9,7 +9,7 @@ export const programs: Program[] = [
       "A calm, low-stimulation room for our youngest friends, focused on sensory play, first words, and safe exploration alongside caring teachers.",
     ageRange: "6 months – 18 months",
     accentColor: "#F4A259",
-    src: "/gallery/program-wobblers.webp",
+    src: "/gallery/program-wobblers-room.webp",
   },
   {
     id: "explorers",
@@ -19,7 +19,7 @@ export const programs: Program[] = [
       "Toddlers build independence through guided play, simple routines, and lots of climbing, stacking, and pretend adventures.",
     ageRange: "18 months – 3 years",
     accentColor: "#5FA8D3",
-    src: "/gallery/program-explorers.webp",
+    src: "/gallery/program-explorers-room.webp",
   },
   {
     id: "dreambuilders",
@@ -29,6 +29,6 @@ export const programs: Program[] = [
       "A structured-but-playful room that mixes early literacy, numbers, and cooperative games to get kids ready for kindergarten.",
     ageRange: "3 years – 5 years",
     accentColor: "#9B5DE5",
-    src: "/gallery/program-dreambuilders.webp",
+    src: "/gallery/program-dreambuilders-room.webp",
   },
 ];

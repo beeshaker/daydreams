@@ -7,7 +7,7 @@ import type {
   DestinationId,
   Program,
   StaffMember,
-  ScheduleBlock,
+  ScheduleDay,
   GalleryImage,
   Testimonial,
 } from "@/lib/daydreams/types";
@@ -21,7 +21,7 @@ import { BookAVisitForm } from "./BookAVisitForm";
 export type DaydreamsContent = {
   programs: Program[];
   staff: StaffMember[];
-  schedule: ScheduleBlock[];
+  schedule: ScheduleDay[];
   gallery: GalleryImage[];
   testimonials: Testimonial[];
 };

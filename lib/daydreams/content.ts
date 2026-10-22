@@ -15,7 +15,7 @@ import type {
   StaffMember,
   Testimonial,
   GalleryImage,
-  ScheduleBlock,
+  ScheduleDay,
   SiteSettings,
 } from "./types";
 
@@ -43,7 +43,7 @@ export async function getGallery(): Promise<GalleryImage[]> {
   return gallery;
 }
 
-export async function getSchedule(): Promise<ScheduleBlock[]> {
+export async function getSchedule(): Promise<ScheduleDay[]> {
   return schedule;
 }
 
@@ -59,7 +59,7 @@ export async function getTrainers(): Promise<StaffMember[]> {
   return trainers;
 }
 
-export async function getGymSchedule(): Promise<ScheduleBlock[]> {
+export async function getGymSchedule(): Promise<ScheduleDay[]> {
   return gymSchedule;
 }
 

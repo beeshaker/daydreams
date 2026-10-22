@@ -8,7 +8,7 @@ import type { Destination } from "./types";
 export const destinations: Destination[] = [
   { id: "programs", label: "Programs", blockLabel: "PLAY", color: "#9b5de5" },
   { id: "staff", label: "Meet the Teachers", blockLabel: "MEET", color: "#5fa8d3" },
-  { id: "schedule", label: "Our Day", blockLabel: "DAY", color: "#f4b93e" },
+  { id: "schedule", label: "Our Week", blockLabel: "DAY", color: "#f4b93e" },
   { id: "gallery", label: "Gallery", blockLabel: "LOOK", color: "#f2789f" },
   { id: "testimonials", label: "Parents Say", blockLabel: "LOVE", color: "#f4a259" },
   { id: "visit", label: "Book a Visit", blockLabel: "VISIT", color: "#2ec4b6" },

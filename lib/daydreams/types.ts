@@ -55,6 +55,12 @@ export type ScheduleBlock = {
   activity: string;
 };
 
+/** One day of a weekly timetable; days with nothing on are left out. */
+export type ScheduleDay = {
+  day: string;
+  sessions: ScheduleBlock[];
+};
+
 export type SiteHours = {
   day: string;
   open: string;
@@ -65,7 +71,7 @@ export type SiteSettings = {
   businessName: string;
   tagline: string;
   address: string;
-  phone: string;
+  phones: string[];
   email: string;
   hours: SiteHours[];
   instagramUrl?: string;

@@ -1,44 +1,61 @@
 import type { Program } from "@/lib/daydreams/types";
 
+// The regular classes on the Dumbbells Weekly Activity Plan (docs/data).
 export const classes: Program[] = [
   {
-    id: "sunrise-spin",
-    title: "Sunrise Spin",
-    shortDescription: "Rhythm-driven cardio to start the day right.",
+    id: "spin",
+    title: "Spin",
+    shortDescription: "High-energy rides in the dedicated spin room.",
     description:
-      "A 6 AM candlelit ride set to a curated playlist — arrive groggy, leave buzzing before the daycare drop-off across the hall even opens.",
+      "Group cycling in our dedicated spin room, with great music and the push of riding together. Runs most days of the week.",
     ageRange: "All levels",
     accentColor: "#b3542e",
-    src: "/gallery/class-sunrise-spin.webp",
+    src: "/dumbbells-premium/assets/class-sunrise.webp",
   },
   {
-    id: "hiit-bootcamp",
-    title: "HIIT Bootcamp",
-    shortDescription: "High-energy intervals that torch calories fast.",
+    id: "functional-crossfit",
+    title: "Functional & CrossFit",
+    shortDescription: "Full-body strength and conditioning.",
     description:
-      "Circuit-style strength and cardio intervals designed to spike your heart rate and build full-body power in 45 minutes flat.",
-    ageRange: "All levels, ages 16+",
+      "Coached sessions that build strength, power and fitness you can use outside the gym, from dumbbells and kettlebells to bodyweight work.",
+    ageRange: "All levels",
     accentColor: "#c4214b",
-    src: "/gallery/class-hiit-bootcamp.webp",
+    src: "/dumbbells-premium/assets/gym-floor.webp",
   },
   {
-    id: "strength-foundations",
-    title: "Strength Foundations",
-    shortDescription: "Barbell basics, built the right way.",
-    description:
-      "Learn proper squat, deadlift, and press form with small-group coaching, whether you're picking up a barbell for the first time or resetting your technique.",
-    ageRange: "Beginner – Intermediate",
+    id: "circuit",
+    title: "Circuit",
+    shortDescription: "Station to station, start to finish.",
+    description: "A circuit around the gym floor mixing strength and cardio stations to work the whole body.",
+    ageRange: "All levels",
     accentColor: "#7443a3",
-    src: "/gallery/class-strength-foundations.webp",
+    src: "/dumbbells-premium/assets/gym-machines.webp",
   },
   {
-    id: "mobility-recovery",
-    title: "Mobility & Recovery",
+    id: "mobility",
+    title: "Mobility",
     shortDescription: "Slow down, stretch out, move better.",
-    description:
-      "A guided mix of mobility drills, foam rolling, and breathwork to keep the rest of your training pain-free and sustainable.",
+    description: "Mobility drills and stretching to keep the rest of your training comfortable and sustainable.",
     ageRange: "All levels",
     accentColor: "#a39093",
-    src: "/gallery/class-mobility-recovery.webp",
+    src: "/dumbbells-premium/assets/class-mobility.webp",
+  },
+  {
+    id: "prenatal-pilates",
+    title: "Prenatal Pilates",
+    shortDescription: "Gentle strength for mums-to-be.",
+    description:
+      "Pilates adapted for pregnancy. Needs at least 3 people, so book one day in advance.",
+    ageRange: "Expecting mums",
+    accentColor: "#8a3352",
+  },
+  {
+    id: "zumba-barre",
+    title: "Zumba & Barre",
+    shortDescription: "Dance-led cardio and ballet-inspired toning.",
+    description:
+      "Weekly Zumba and Barre sessions. Each needs at least 3 people, so book one day in advance.",
+    ageRange: "All levels",
+    accentColor: "#4f3a63",
   },
 ];

@@ -30,8 +30,14 @@ export function SiteFAQs({
       question: "How can I reach you directly?",
       answer: (
         <p>
-          Call <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`} className="font-semibold underline">{settings.phone}</a>
-          {" "}or email <a href={`mailto:${settings.email}`} className="break-words font-semibold underline">{settings.email}</a>.
+          Call{" "}
+          {settings.phones.map((phone, i) => (
+            <span key={phone}>
+              {i > 0 && " or "}
+              <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="font-semibold underline">{phone}</a>
+            </span>
+          ))}
+          , or email <a href={`mailto:${settings.email}`} className="break-words font-semibold underline">{settings.email}</a>.
         </p>
       ),
     },

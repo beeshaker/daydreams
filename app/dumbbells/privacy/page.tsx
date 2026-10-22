@@ -100,9 +100,11 @@ export default function DumbbellsPrivacyPage() {
 
           <h2>Contact us</h2>
           <p>
-            41 Gurviellia Grove, Nairobi
+            41 Greviellia Grove, Nairobi
             <br />
             <a href="tel:+254180117040">0180 117040</a>
+            <br />
+            <a href="tel:+254715634027">0715 634 027</a>
             <br />
             <a href="mailto:daydreamsanddumbbells@gmail.com">daydreamsanddumbbells@gmail.com</a>
           </p>

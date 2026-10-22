@@ -1,14 +1,63 @@
-import type { ScheduleBlock } from "@/lib/daydreams/types";
+import type { ScheduleDay } from "@/lib/daydreams/types";
 
-export const schedule: ScheduleBlock[] = [
-  { id: "s1", time: "7:00 – 8:30", activity: "Arrival & free play" },
-  { id: "s2", time: "8:30 – 9:00", activity: "Breakfast" },
-  { id: "s3", time: "9:00 – 10:00", activity: "Circle time & story" },
-  { id: "s4", time: "10:00 – 11:00", activity: "Outdoor play" },
-  { id: "s5", time: "11:00 – 12:00", activity: "Learning centers" },
-  { id: "s6", time: "12:00 – 12:45", activity: "Lunch" },
-  { id: "s7", time: "12:45 – 2:45", activity: "Nap / quiet time" },
-  { id: "s8", time: "2:45 – 3:30", activity: "Snack & art" },
-  { id: "s9", time: "3:30 – 5:00", activity: "Music, games & free play" },
-  { id: "s10", time: "5:00 – 6:00", activity: "Wind down & pickup" },
+// From the Daydreams Weekly Activity Plan (docs/data). Activities can be
+// swapped between days or slots depending on the children, the weather and
+// the day's routine.
+export const schedule: ScheduleDay[] = [
+  {
+    day: "Monday",
+    sessions: [
+      { id: "mon-1", time: "9:00 – 10:00 AM", activity: "Art & crafts" },
+      { id: "mon-2", time: "11:30 AM – 12:30 PM", activity: "Messy play" },
+      { id: "mon-3", time: "12:30 – 2:30 PM", activity: "Play pod" },
+      { id: "mon-4", time: "2:30 – 3:30 PM", activity: "Play pod" },
+      { id: "mon-5", time: "3:30 – 4:30 PM", activity: "Music & movement" },
+    ],
+  },
+  {
+    day: "Tuesday",
+    sessions: [
+      { id: "tue-1", time: "9:00 – 10:00 AM", activity: "Sensory exploration" },
+      { id: "tue-2", time: "11:30 AM – 12:30 PM", activity: "Puppetry & storytelling" },
+      { id: "tue-3", time: "12:30 – 2:30 PM", activity: "Mud pit exploration" },
+      { id: "tue-4", time: "2:30 – 3:30 PM", activity: "Art & crafts" },
+      { id: "tue-5", time: "3:30 – 4:30 PM", activity: "Yoga & movement" },
+    ],
+  },
+  {
+    day: "Wednesday",
+    sessions: [
+      { id: "wed-1", time: "9:00 – 10:00 AM", activity: "Play pod" },
+      { id: "wed-2", time: "11:30 AM – 12:30 PM", activity: "Play pod" },
+      { id: "wed-3", time: "12:30 – 2:30 PM", activity: "Fine motor skills" },
+      { id: "wed-4", time: "2:30 – 3:30 PM", activity: "Sensory exploration" },
+      { id: "wed-5", time: "3:30 – 4:30 PM", activity: "Storytelling" },
+    ],
+  },
+  {
+    day: "Thursday",
+    sessions: [
+      { id: "thu-1", time: "9:00 – 10:00 AM", activity: "Music & movement" },
+      { id: "thu-2", time: "11:30 AM – 12:30 PM", activity: "Art & crafts" },
+      { id: "thu-3", time: "12:30 – 2:30 PM", activity: "Science exploration" },
+      { id: "thu-4", time: "2:30 – 3:30 PM", activity: "Gross motor skills" },
+      { id: "thu-5", time: "3:30 – 4:30 PM", activity: "Art & crafts" },
+    ],
+  },
+  {
+    day: "Friday",
+    sessions: [
+      { id: "fri-1", time: "9:00 – 10:00 AM", activity: "Puppetry & storytelling" },
+      { id: "fri-2", time: "11:30 AM – 12:30 PM", activity: "Sensory exploration" },
+      { id: "fri-3", time: "12:30 – 2:30 PM", activity: "Disco & dance" },
+      { id: "fri-4", time: "2:30 – 3:30 PM", activity: "Music & movement" },
+    ],
+  },
+  {
+    day: "Saturday",
+    sessions: [
+      { id: "sat-1", time: "9:00 – 10:00 AM", activity: "Play pod" },
+      { id: "sat-2", time: "11:30 AM – 12:30 PM", activity: "Play pod" },
+    ],
+  },
 ];

@@ -8,10 +8,17 @@ import {
   getGymSchedule,
   getGymSiteSettings,
 } from "@/lib/daydreams/content";
+import type { ScheduleDay } from "@/lib/daydreams/types";
 
 function formatHours(hours: { day: string; open: string; close: string }[]): string {
   return hours
     .map((block) => `- ${block.day}: ${block.open === "Closed" ? "Closed" : `${block.open} – ${block.close}`}`)
+    .join("\n");
+}
+
+function formatWeek(week: ScheduleDay[]): string {
+  return week
+    .map((day) => `- ${day.day}: ${day.sessions.map((s) => `${s.time} ${s.activity}`).join("; ")}`)
     .join("\n");
 }
 
@@ -52,7 +59,7 @@ A gym and a daycare, under one roof.
 ${daydreamsSettings.tagline}
 
 Address: ${daydreamsSettings.address}
-Phone: ${daydreamsSettings.phone}
+Phone: ${daydreamsSettings.phones.join(" / ")}
 Email: ${daydreamsSettings.email}
 
 Hours:
@@ -68,16 +75,16 @@ ${programs
 
 ${staff.map((member) => `- **${member.name}**, ${member.role}: ${member.bio}`).join("\n")}
 
-### Daily schedule
+### Weekly activity plan
 
-${daydreamsSchedule.map((block) => `- ${block.time}: ${block.activity}`).join("\n")}
+${formatWeek(daydreamsSchedule)}
 
 ## Dumbbells (gym)
 
 ${gymSettings.tagline}
 
 Address: ${gymSettings.address}
-Phone: ${gymSettings.phone}
+Phone: ${gymSettings.phones.join(" / ")}
 Email: ${gymSettings.email}
 
 Hours:
@@ -93,8 +100,8 @@ ${gymClasses
 
 ${trainers.map((trainer) => `- **${trainer.name}**, ${trainer.role}: ${trainer.bio}`).join("\n")}
 
-### Class schedule
+### Weekly class plan
 
-${gymSchedule.map((block) => `- ${block.time}: ${block.activity}`).join("\n")}
+${formatWeek(gymSchedule)}
 `;
 }

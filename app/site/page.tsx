@@ -25,7 +25,7 @@ export default function SitePage() {
         <div className="grid gap-6 md:grid-cols-2">
           <Link href="/daydreams/site" className="group overflow-hidden rounded-3xl border border-brand-lavender/40 bg-brand-lavender/15 transition hover:shadow-lg">
             <div className="relative h-56 overflow-hidden">
-              <Image src="/gallery/program-explorers.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover motion-safe:transition-transform motion-safe:group-hover:scale-105" />
+              <Image src="/gallery/daydreams-play-room.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover motion-safe:transition-transform motion-safe:group-hover:scale-105" />
             </div>
             <div className="p-7">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-lavender-strong">Daycare &amp; early learning</p>
@@ -36,7 +36,7 @@ export default function SitePage() {
           </Link>
           <Link href="/dumbbells" className="group overflow-hidden rounded-3xl border border-brand-ink bg-brand-ink text-white transition hover:shadow-lg">
             <div className="relative h-56 overflow-hidden">
-              <Image src="/gallery/dumbbells-strength.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover motion-safe:transition-transform motion-safe:group-hover:scale-105" />
+              <Image src="/dumbbells-premium/assets/gym-floor.webp" alt="" fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover motion-safe:transition-transform motion-safe:group-hover:scale-105" />
             </div>
             <div className="p-7">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-pink">Strength &amp; fitness</p>
