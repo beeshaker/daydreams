@@ -25,7 +25,9 @@ export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
   const leads = await listLeads({
     status: isLeadStatus(statusParam) ? statusParam : undefined,
     leadType:
-      leadTypeParam === "daycare-interest" || leadTypeParam === "gym-interest" ? leadTypeParam : undefined,
+      leadTypeParam === "daycare-interest" || leadTypeParam === "gym-interest" || leadTypeParam === "general-enquiry"
+        ? leadTypeParam
+        : undefined,
     search: searchParam,
   });
 
@@ -101,6 +103,7 @@ export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
             <option value="">All lead types</option>
             <option value="daycare-interest">Daycare interest</option>
             <option value="gym-interest">Gym interest</option>
+            <option value="general-enquiry">General enquiry</option>
           </select>
           <input
             type="text"

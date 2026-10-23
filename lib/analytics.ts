@@ -3,6 +3,7 @@ type DestinationEventName = `destination_${string}_opened`;
 export type AnalyticsEvent =
   | "landing_daydreams_selected"
   | "landing_dumbbells_selected"
+  | "landing_game_selected"
   | "daydreams_game_started"
   | "daydreams_traditional_selected"
   | DestinationEventName

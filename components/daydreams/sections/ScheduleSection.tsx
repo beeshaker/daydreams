@@ -2,8 +2,8 @@ import type { ScheduleDay } from "@/lib/daydreams/types";
 
 export function ScheduleSection({ schedule }: { schedule: ScheduleDay[] }) {
   return (
-    <div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="@container">
+      <div className="grid gap-4 @lg:grid-cols-2 @4xl:grid-cols-3">
         {schedule.map((day) => (
           <div
             key={day.day}
@@ -14,11 +14,11 @@ export function ScheduleSection({ schedule }: { schedule: ScheduleDay[] }) {
             </h3>
             <ul className="divide-y divide-brand-ink/10 zone-dark:divide-white/10">
               {day.sessions.map((block) => (
-                <li key={block.id} className="flex items-baseline justify-between gap-4 px-5 py-2.5">
-                  <span className="shrink-0 text-xs font-semibold text-brand-lavender-strong zone-dark:text-brand-lavender">
+                <li key={block.id} className="flex flex-col gap-0.5 px-5 py-2.5">
+                  <span className="text-xs font-semibold text-brand-lavender-strong zone-dark:text-brand-lavender">
                     {block.time}
                   </span>
-                  <span className="text-right text-sm text-brand-ink/80 zone-dark:text-white/70">{block.activity}</span>
+                  <span className="text-sm text-brand-ink/80 zone-dark:text-white/70">{block.activity}</span>
                 </li>
               ))}
             </ul>

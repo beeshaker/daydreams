@@ -16,13 +16,21 @@ import { GallerySection } from "@/components/daydreams/sections/GallerySection";
 import { TestimonialsSection } from "@/components/daydreams/sections/TestimonialsSection";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { SiteFAQs } from "@/components/site/SiteFAQs";
+import { SiteFAQs, contactFaqs } from "@/components/site/SiteFAQs";
 import { HeroVideo } from "@/components/site/HeroVideo";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { LOCALITY, OG_IMAGES, localBusinessJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Daydreams — Daycare & Early Learning",
-  description: "Discover Daydreams daycare: explore our programs, meet the teachers, see our weekly activities, and book a visit for your family.",
-};
+const DESCRIPTION = `Daydreams is a daycare and early learning centre in ${LOCALITY} for children 6 months to 5 years — sensory play, soft play, music, art and pre-K prep, with a gym and café under the same roof.`;
+
+export const metadata: Metadata = pageMetadata({
+  title: `Daydreams — Daycare & Early Learning in ${LOCALITY}`,
+  description: DESCRIPTION,
+  path: "/daydreams/site",
+  image: OG_IMAGES.daydreams,
+});
+
+const programPath = (id: string) => `/daydreams/programs/${id}`;
 
 const sections = [
   { id: "programs", label: "Programs" },
@@ -45,13 +53,24 @@ export default async function DaydreamsSitePage() {
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-ink">
+      <JsonLd
+        data={localBusinessJsonLd({
+          type: "ChildCare",
+          settings: siteSettings,
+          path: "/daydreams/site",
+          description: DESCRIPTION,
+          image: OG_IMAGES.daydreams.url,
+          offerings: programs,
+          offeringPath: programPath,
+        })}
+      />
       <SiteHeader brand="daydreams" sections={sections} bookingId="visit" bookingLabel="Book a Visit" />
       <main>
         <section className="relative min-h-[520px] overflow-hidden bg-brand-ink sm:min-h-[620px]">
           <HeroVideo src="/daydreams-hero-video.mp4" poster="/daydreams-hero-poster.webp" />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/40 to-brand-ink/15" />
           <div className="relative z-10 mx-auto flex min-h-[520px] max-w-5xl flex-col justify-end px-6 pb-14 pt-16 sm:min-h-[620px] sm:pb-20">
-            <p className="text-xs font-bold uppercase tracking-widest text-white/70">Daydreams · Daycare &amp; early learning</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-white/70">Daydreams · Daycare &amp; early learning in {LOCALITY}</p>
             <h1 className="font-baloo mt-4 text-5xl leading-[1.05] text-white sm:text-7xl">
               Little dreamers.
               <br />
@@ -74,7 +93,7 @@ export default async function DaydreamsSitePage() {
             <section id="programs" className="scroll-mt-40">
               <h2 className="font-baloo text-2xl text-brand-ink">Programs</h2>
               <div className="mt-5">
-                <ProgramsSection programs={programs} />
+                <ProgramsSection programs={programs} hrefFor={programPath} />
               </div>
             </section>
 
@@ -121,16 +140,29 @@ export default async function DaydreamsSitePage() {
           </div>
         </div>
         <SiteFAQs
-          settings={siteSettings}
-          gettingStarted={
-            <p>
-              Fill out the <a href="#visit" className="font-semibold text-brand-lavender-strong underline">Book a Visit</a> form
-              and we&apos;ll follow up to arrange a tour and talk about your family&apos;s needs.
-            </p>
-          }
+          questions={[
+            {
+              question: "How do I get started?",
+              answerText: "Fill out the Book a Visit form and we'll follow up to arrange a tour and talk about your family's needs.",
+              answer: (
+                <p>
+                  Fill out the <a href="#visit" className="font-semibold text-brand-lavender-strong underline">Book a Visit</a> form
+                  and we&apos;ll follow up to arrange a tour and talk about your family&apos;s needs.
+                </p>
+              ),
+            },
+            ...contactFaqs(siteSettings),
+          ]}
         />
       </main>
-      <SiteFooter settings={siteSettings} otherBrand={{ name: "Dumbbells", href: "/dumbbells" }} />
+      <SiteFooter
+        settings={siteSettings}
+        otherBrand={{ name: "Dumbbells", href: "/dumbbells" }}
+        links={[{
+          heading: "Programs",
+          items: programs.map((program) => ({ label: `${program.title} (${program.ageRange})`, href: programPath(program.id) })),
+        }]}
+      />
     </div>
   );
 }

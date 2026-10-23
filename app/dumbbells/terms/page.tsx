@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { OG_IMAGES, pageMetadata } from "@/lib/seo";
 
 /**
  * Lightweight, static legal page — not part of the scrollcraft build (see
@@ -9,10 +10,12 @@ import Link from "next/link";
  * than importing the whole scrollcraft stylesheet.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms of Service — Dumbbells",
   description: "The terms that apply to using this website and booking a session with Dumbbells.",
-};
+  path: "/dumbbells/terms",
+  image: OG_IMAGES.dumbbells,
+});
 
 const STYLE = `
   .legal {
@@ -24,6 +27,7 @@ const STYLE = `
   .legal__wrap { max-width: 42rem; margin-inline: auto; padding: 3.5rem 1.5rem 6rem; }
   .legal__back { color: var(--ink-soft); text-decoration: none; font-size: .9rem; }
   .legal__back:hover { color: var(--ink); }
+  .legal__sep { color: var(--ink-soft); margin: 0 .6rem; }
   .legal h1 { font-family: "Archivo", system-ui, sans-serif; font-weight: 800; font-size: clamp(1.9rem, 5vw, 2.6rem); margin: 1.5rem 0 .5rem; }
   .legal__updated { color: var(--ink-soft); font-size: .85rem; margin: 0 0 2.5rem; }
   .legal h2 { font-family: "Archivo", system-ui, sans-serif; font-weight: 700; font-size: 1.2rem; margin: 2.2rem 0 .75rem; }
@@ -42,6 +46,10 @@ export default function DumbbellsTermsPage() {
         <div className="legal__wrap">
           <Link href="/dumbbells" className="legal__back">
             ← Back to Dumbbells
+          </Link>
+          <span className="legal__sep" aria-hidden="true">·</span>
+          <Link href="/" className="legal__back">
+            Home
           </Link>
           <h1>Terms of Service</h1>
           <p className="legal__updated">Last updated: September 2026</p>

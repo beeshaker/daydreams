@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bebas_Neue, Baloo_2 } from "next/font/google";
 import { VoiceAgentWidget } from "@/components/voice/VoiceAgentWidget";
+import { LOCALITY, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,9 +28,30 @@ const baloo2 = Baloo_2({
   subsets: ["latin"],
 });
 
+/**
+ * Defaults for any page that doesn't set its own (each public page calls
+ * pageMetadata() from lib/seo.ts). metadataBase lets those pages use
+ * relative canonical and Open Graph image paths.
+ */
 export const metadata: Metadata = {
-  title: "Daydreams & Dumbbells",
-  description: "A gym and a daycare, under one roof — pick your side.",
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  ...pageMetadata({
+    title: `${SITE_NAME} — Daycare & Gym in ${LOCALITY}`,
+    description: `A daycare and a gym under one roof in ${LOCALITY}. Daydreams offers early learning for children 6 months to 5 years; Dumbbells offers spin, strength and fitness classes.`,
+    path: "/",
+  }),
+  // A canonical here would be inherited by every page that doesn't set its
+  // own, pointing them all at "/" — each page sets its own instead.
+  alternates: undefined,
+  // Set once the domain is verified in Google Search Console (HTML tag method).
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
+  }),
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f8f7f6",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

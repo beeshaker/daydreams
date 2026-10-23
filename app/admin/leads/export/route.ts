@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdminSession, UnauthorizedError } from "@/lib/admin/session";
 import { listLeads, type LeadStatus } from "@/lib/leads/store";
+import type { ValidatedLeadPayload } from "@/lib/leads/schema";
 
 const COLUMNS = [
   "id",
@@ -67,7 +68,7 @@ export async function GET(request: Request) {
 
   const leads = await listLeads({
     status: status as LeadStatus | undefined,
-    leadType: leadType as "daycare-interest" | "gym-interest" | undefined,
+    leadType: leadType as ValidatedLeadPayload["leadType"] | undefined,
     search,
   });
 

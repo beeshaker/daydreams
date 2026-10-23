@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getGymClasses, getGymSiteSettings } from "@/lib/daydreams/content";
+import { LOCALITY, OG_IMAGES, localBusinessJsonLd, pageMetadata } from "@/lib/seo";
 
 /**
  * The premium scroll-driven Dumbbells page, built with the scroll-craft
@@ -22,13 +25,22 @@ import Script from "next/script";
  * that submission is live, using the TURNSTILE_SITE_KEY committed in this
  * repo's .env, which is Cloudflare's public *test* key. Swap it for the
  * real production site key before this goes live for real visitors.
+ *
+ * Note: scrollcraft/builds/dumbbells-premium/index.html still has the
+ * pre-client placeholder content (classes, hours, contact), so this file is
+ * now the source of truth for the page's copy, not the build folder.
  */
 
-export const metadata: Metadata = {
-  title: "Dumbbells — Your journey starts now",
-  description:
-    "Strength training for people with a life outside the gym. Real coaches, real classes, one honest place to start.",
-};
+const DESCRIPTION = `Dumbbells is a gym in ${LOCALITY} with spin, functional & CrossFit, circuit, mobility, prenatal Pilates, Zumba and Barre classes — and a daycare under the same roof.`;
+
+export const metadata: Metadata = pageMetadata({
+  title: `Dumbbells — Gym, Spin & Fitness Classes in ${LOCALITY}`,
+  description: DESCRIPTION,
+  path: "/dumbbells",
+  image: OG_IMAGES.dumbbells,
+});
+
+const classPath = (id: string) => `/dumbbells/classes/${id}`;
 
 const PAGE_STYLE = `
   :root {
@@ -70,6 +82,10 @@ const PAGE_STYLE = `
   .nav__other {
     display: none; font-family: var(--sc-font-text); font-size: var(--sc-t-sm);
     color: var(--sc-ink-soft); text-decoration: none;
+  }
+  .nav__links .nav__home {
+    display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; color: var(--sc-ink);
+    padding-right: var(--sc-5); border-right: 1px solid var(--sc-hairline);
   }
   .nav__other:hover { color: var(--sc-ink); }
   @media (min-width: 640px) { .nav__other { display: inline-flex; align-items: center; gap: .3rem; } }
@@ -170,6 +186,9 @@ const PAGE_STYLE = `
   .item__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .item h3 { font-family: var(--sc-font-display); font-size: var(--sc-t-lg); font-weight: 700; margin: 0; color: var(--sc-ink); }
   .item p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
+  .item__more { color: var(--sc-ink); font-size: var(--sc-t-sm); font-weight: 600; text-underline-offset: 4px; }
+  .item__more:hover { color: var(--sc-accent); }
+  .rail__note a:not(.btn-ghost) { color: var(--sc-ink); text-underline-offset: 3px; }
   .rail__note { flex: 0 0 max(14rem, 22vw); display: flex; flex-direction: column; justify-content: center; }
   .rail__note p { margin: 0 0 var(--sc-4); }
 
@@ -274,7 +293,7 @@ const PAGE_STYLE = `
   }
   .site-foot__row {
     display: grid; gap: var(--sc-7);
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
     max-width: var(--sc-maxw); margin-inline: auto;
     padding: var(--sc-8) var(--sc-gutter) var(--sc-7);
   }
@@ -291,6 +310,9 @@ const PAGE_STYLE = `
   .site-foot p strong { color: var(--sc-ink); font-weight: 600; }
   .site-foot a { color: var(--sc-ink-soft); text-decoration: none; }
   .site-foot a:hover { color: var(--sc-accent); }
+  .site-foot ul { list-style: none; margin: 0; padding: 0; }
+  .site-foot li { margin: 0 0 var(--sc-3); font-size: var(--sc-t-sm); line-height: var(--sc-leading-body); }
+  .site-foot address { font-style: normal; }
   .site-foot__bottom {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sc-4);
     max-width: var(--sc-maxw); margin-inline: auto;
@@ -373,6 +395,7 @@ const PAGE_BODY = `
     </div>
   </div>
   <nav class="nav__links" aria-label="Dumbbells sections">
+    <a class="nav__home" href="/"><svg aria-hidden="true" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1V9.5Z" stroke-linejoin="round"/></svg>Home</a>
     <a href="#range">Classes</a>
     <a href="#members">Members</a>
     <a href="#join">Book</a>
@@ -404,7 +427,7 @@ const PAGE_BODY = `
       <div class="sc-scrim sc-scrim--lead hero-scrim" aria-hidden="true"></div>
 
       <div class="sc-copy sc-copy--lead hero-copy" data-sc-cue="0 0.38 0">
-        <span class="eyebrow">Dumbbells &middot; strength &amp; fitness</span>
+        <span class="eyebrow">Dumbbells &middot; strength &amp; fitness in Nairobi</span>
         <h1 class="sc-display sc-display--xl" data-sc-kinetic="lines">Your journey starts now.</h1>
         <p class="sc-body">Strength training for people with a life outside the gym. Real coaches. Real classes. One honest place to start.</p>
         <div class="hero-actions">
@@ -437,28 +460,32 @@ const PAGE_BODY = `
           <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-sunrise.webp" alt="A stationary bike in the spin room"></div>
           <h3>Spin</h3>
           <p>High-energy rides in our dedicated spin room, most days of the week.</p>
+          <a class="item__more" href="/dumbbells/classes/spin">More about Spin <span aria-hidden="true">&rarr;</span></a>
         </article>
 
         <article class="item">
           <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/gym-floor.webp" alt="The Dumbbells gym floor, with a dumbbell rack, benches and a cable machine"></div>
           <h3>Functional &amp; CrossFit</h3>
           <p>Coached full-body strength and conditioning you can use outside the gym.</p>
+          <a class="item__more" href="/dumbbells/classes/functional-crossfit">More about Functional &amp; CrossFit <span aria-hidden="true">&rarr;</span></a>
         </article>
 
         <article class="item">
           <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/gym-machines.webp" alt="Strength machines and treadmills along the mirrored wall of the gym"></div>
           <h3>Circuit</h3>
           <p>Station to station around the gym floor, strength and cardio together.</p>
+          <a class="item__more" href="/dumbbells/classes/circuit">More about Circuit <span aria-hidden="true">&rarr;</span></a>
         </article>
 
         <article class="item">
           <div class="item__frame" data-sc-tilt="6"><img src="/dumbbells-premium/assets/class-mobility.webp" alt="A foam roller and towel resting on a gym mat"></div>
           <h3>Mobility</h3>
           <p>Slow down, stretch out, move better.</p>
+          <a class="item__more" href="/dumbbells/classes/mobility">More about Mobility <span aria-hidden="true">&rarr;</span></a>
         </article>
 
         <div class="rail__note sc-stack">
-          <p class="sc-body">Plus Prenatal Pilates, Zumba, Barre and more through the week.</p>
+          <p class="sc-body">Plus <a href="/dumbbells/classes/prenatal-pilates">Prenatal Pilates</a>, <a href="/dumbbells/classes/zumba-barre">Zumba and Barre</a> and more through the week.</p>
           <a class="btn-ghost" href="#join">Ask about a class</a>
         </div>
       </div>
@@ -475,7 +502,7 @@ const PAGE_BODY = `
       <div class="quotes" data-sc-in data-sc-stagger="80" style="margin-top: var(--sc-8);">
         <div class="quote">
           <blockquote>&ldquo;Me &amp; my friend &amp; our babies spent a great day at Daydreams &amp; Dumbbells. This place is amazing, it has ideally everything that a mom with a baby can need. Really a perfect idea.&rdquo;</blockquote>
-          <cite>Sheima Elrasheid &middot; Mum, Nairobi mums' group</cite>
+          <cite>Mum &middot; Nairobi mums' group</cite>
         </div>
       </div>
     </div>
@@ -541,13 +568,17 @@ const PAGE_BODY = `
       <p>Mon &ndash; Fri<br><strong>8:30 AM &ndash; 6:00 PM</strong></p>
       <p>Saturday<br><strong>9:00 AM &ndash; 1:00 PM</strong></p>
     </div>
-    <div class="site-foot__contact">
+    <address class="site-foot__contact">
       <h3>Visit</h3>
-      <p>41 Greviellia Grove, Nairobi</p>
+      <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Dumbbells%2C%2041%20Greviellia%20Grove%2C%20Nairobi%2C%20Kenya" target="_blank" rel="noopener noreferrer">41 Greviellia Grove, Nairobi, Kenya</a></p>
       <p><a href="tel:+254180117040">0180 117040</a></p>
       <p><a href="tel:+254715634027">0715 634 027</a></p>
       <p><a href="mailto:daydreamsanddumbbells@gmail.com">daydreamsanddumbbells@gmail.com</a></p>
-    </div>
+    </address>
+    <nav class="site-foot__classes" aria-label="Classes">
+      <h3>Classes</h3>
+      <ul><!--CLASS_LINKS--></ul>
+    </nav>
   </div>
   <div class="site-foot__bottom">
     <p>&copy; Dumbbells. All rights reserved.</p>
@@ -670,9 +701,29 @@ const LEAD_FORM_SCRIPT = `
 })();
 `;
 
-export default function DumbbellsPage() {
+function escapeHtml(text: string) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+export default async function DumbbellsPage() {
+  const [classes, settings] = await Promise.all([getGymClasses(), getGymSiteSettings()]);
+  const classLinks = classes
+    .map((gymClass) => `<li><a href="${classPath(gymClass.id)}">${escapeHtml(gymClass.title)}</a></li>`)
+    .join("");
+
   return (
     <>
+      <JsonLd
+        data={localBusinessJsonLd({
+          type: "ExerciseGym",
+          settings,
+          path: "/dumbbells",
+          description: DESCRIPTION,
+          image: OG_IMAGES.dumbbells.url,
+          offerings: classes,
+          offeringPath: classPath,
+        })}
+      />
       <link
         rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b0908'/><rect x='7' y='14' width='18' height='4' rx='1.5' fill='%23c4214b'/><rect x='4' y='11' width='4' height='10' rx='1' fill='%23c4214b'/><rect x='24' y='11' width='4' height='10' rx='1' fill='%23c4214b'/></svg>"
@@ -686,7 +737,7 @@ export default function DumbbellsPage() {
       <link rel="stylesheet" href="/dumbbells-premium/scrollcraft.css" />
       <style dangerouslySetInnerHTML={{ __html: PAGE_STYLE }} />
 
-      <div dangerouslySetInnerHTML={{ __html: PAGE_BODY }} />
+      <div dangerouslySetInnerHTML={{ __html: PAGE_BODY.replace("<!--CLASS_LINKS-->", classLinks) }} />
 
       {/* A plain <Script src> here races the mount call below (Next loads
           external afterInteractive scripts asynchronously, so execution

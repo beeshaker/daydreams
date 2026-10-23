@@ -6,7 +6,7 @@ import { z } from "zod";
  * the API will actually accept — the type is for callers, this is the gate.
  */
 export const leadPayloadSchema = z.object({
-  leadType: z.enum(["daycare-interest", "gym-interest"]),
+  leadType: z.enum(["daycare-interest", "gym-interest", "general-enquiry"]),
   source: z.enum(["game", "traditional-site", "voice-agent"]),
   parentName: z.string().trim().min(1, "Name is required").max(200),
   email: z.string().trim().email("Enter a valid email address").max(320),

@@ -6,10 +6,18 @@ import {
   getGallery,
   getTestimonials,
 } from "@/lib/daydreams/content";
+import { OG_IMAGES, pageMetadata } from "@/lib/seo";
 
+// The game has no crawlable content — search engines get /daydreams/site instead.
 export const metadata = {
-  title: "Daydreams — Play",
-  description: "Drive around and discover what makes Daydreams daycare special.",
+  ...pageMetadata({
+    title: "Daydreams — Play the Game",
+    description: "Drive around and discover what makes Daydreams daycare special.",
+    path: "/daydreams",
+    image: OG_IMAGES.daydreams,
+    noIndex: true,
+  }),
+  alternates: { canonical: "/daydreams/site" },
 };
 
 export default async function DaydreamsPage() {

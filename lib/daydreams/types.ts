@@ -23,6 +23,14 @@ export type Program = {
   accentColor: string;
   /** Falls back to accentColor as a flat card treatment when absent. */
   src?: string;
+  /** Body copy for the program/class's own page; paragraphs split on blank lines. */
+  longDescription?: string;
+  /** Search-result snippet for that page (~150 characters). */
+  seoDescription?: string;
+  /** Short "what a session looks like" bullets for that page. */
+  highlights?: string[];
+  /** Activity names on the weekly timetable that belong to this class (matched as prefixes). */
+  scheduleActivities?: string[];
 };
 
 export type StaffMember = {
@@ -93,7 +101,7 @@ export type DestinationTriggerState = {
 
 export type LeadSource = "game" | "traditional-site" | "voice-agent";
 
-export type LeadType = "daycare-interest" | "gym-interest";
+export type LeadType = "daycare-interest" | "gym-interest" | "general-enquiry";
 
 export type LeadPayload = {
   leadType: LeadType;

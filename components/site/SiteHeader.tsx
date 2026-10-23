@@ -51,6 +51,14 @@ export function SiteHeader({
           </div>
         </div>
         <nav aria-label={`${name} sections`} className="flex gap-5 overflow-x-auto pb-3 text-sm">
+          {/* Back to the combined home page from anywhere on either brand's site. */}
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-1.5 border-r border-brand-ink/15 py-1 pr-5 font-semibold text-brand-ink hover:text-brand-ink/70 zone-dark:border-white/15 zone-dark:text-white zone-dark:hover:text-white/70"
+          >
+            <HomeIcon />
+            Home
+          </Link>
           {sections.map((section) => (
             <a
               key={section.id}
@@ -63,5 +71,13 @@ export function SiteHeader({
         </nav>
       </div>
     </header>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.8}>
+      <path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1V9.5Z" strokeLinejoin="round" />
+    </svg>
   );
 }

@@ -2,10 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { LegacySiteRedirect } from "@/components/site/LegacySiteRedirect";
+import { pageMetadata } from "@/lib/seo";
 
+// Duplicates the landing page's job, so it points search engines at "/".
 export const metadata: Metadata = {
-  title: "Choose Your Website — Daydreams & Dumbbells",
-  description: "Visit Daydreams for daycare and early learning, or Dumbbells for gym classes and strength training.",
+  ...pageMetadata({
+    title: "Choose Your Website — Daydreams & Dumbbells",
+    description: "Visit Daydreams for daycare and early learning, or Dumbbells for gym classes and strength training.",
+    path: "/site",
+  }),
+  alternates: { canonical: "/" },
 };
 
 export default function SitePage() {
