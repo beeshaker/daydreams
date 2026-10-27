@@ -12,6 +12,7 @@
     "seed:kb": "tsx scripts/seed-knowledge-base.ts",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed-admin": "tsx scripts/seed-admin.ts",
+    "db:reset-admin-password": "tsx scripts/reset-admin-password.ts",
     "leads:import-legacy": "tsx scripts/import-legacy-leads.ts",
     "leads:purge": "tsx scripts/purge-expired-leads.ts",
     "leads:retry-emails": "tsx scripts/retry-failed-emails.ts",
@@ -26,7 +27,7 @@
     "bcryptjs": "^3.0.3",
     "gsap": "^3.15.0",
     "iron-session": "^8.0.4",
-    "next": "16.3.3",
+    "next": "16.4.3",
     "otplib": "^13.5.0",
     "pg": "^8.23.0",
     "playwright-core": "^1.63.0",
@@ -34,7 +35,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "^0.185.1",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -48,12 +49,15 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.185.4",
     "eslint": "^9",
-    "eslint-config-next": "16.3.3",
+    "eslint-config-next": "16.4.3",
     "jsdom": "^29.1.1",
     "patch-package": "^8.0.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5",
     "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "source-map-js": "^1.2.2"
   }
 }

@@ -16,6 +16,7 @@ const MIGRATIONS: Migration[] = [
   "0002_admin_users",
   "0003_audit_log",
   "0004_rate_limit",
+  "0005_totp_replay",
 ].map((id) => ({
   id,
   sql: readFileSync(path.join(process.cwd(), "lib/db/migrations", `${id}.sql`), "utf-8"),

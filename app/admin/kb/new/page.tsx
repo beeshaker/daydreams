@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin/session";
 import { createKbTextAction, createKbUrlAction, createKbFileAction } from "../actions";
 
 export const metadata = {
   title: "Admin — Add Knowledge Base Document",
 };
 
-export default function AdminKbNewPage() {
+export default async function AdminKbNewPage() {
+  await requireAdminPage();
   return (
     <div className="min-h-screen bg-brand-bg px-6 py-10 text-brand-ink">
       <div className="mx-auto max-w-2xl">

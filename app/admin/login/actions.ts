@@ -4,14 +4,20 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db/client";
 import { verifyPassword } from "@/lib/admin/passwords";
-import { verifyTotpCode } from "@/lib/admin/totp";
-import { getAdminSession } from "@/lib/admin/session";
+import { matchTotpCode } from "@/lib/admin/totp";
+import { getAdminSession, MFA_REQUIRED } from "@/lib/admin/session";
 import { logAdminAction } from "@/lib/admin/audit";
 import { isRateLimited } from "@/lib/ratelimit/postgresRateLimit";
 import { getClientIp } from "@/lib/http/clientIp";
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 8;
+// Per-username cap on top of the per-IP one, so guessing one account's
+// password (or TOTP code) from many IPs is still throttled. Kept loose
+// enough that someone hammering a username can only delay, not
+// permanently lock out, the real admin.
+const USERNAME_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const USERNAME_RATE_LIMIT_MAX = 10;
 
 type AdminUserRow = {
   id: string;
@@ -49,6 +55,17 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
     return { error: "Username and password are required." };
   }
 
+  if (
+    await isRateLimited(
+      "admin-login-user",
+      username.toLowerCase(),
+      USERNAME_RATE_LIMIT_WINDOW_MS,
+      USERNAME_RATE_LIMIT_MAX,
+    )
+  ) {
+    return { error: "Too many attempts. Please wait a few minutes and try again." };
+  }
+
   const pool = await getDb();
   const { rows } = await pool.query<AdminUserRow>(
     "SELECT id, username, password_hash, role, totp_secret, totp_enabled, session_version FROM admin_users WHERE username = $1",
@@ -73,7 +90,20 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
     if (!totpCode) {
       return { pendingUsername: admin.username };
     }
-    if (!admin.totp_secret || !(await verifyTotpCode(admin.totp_secret, totpCode))) {
+    const matchedEpoch = admin.totp_secret ? await matchTotpCode(admin.totp_secret, totpCode) : null;
+    // Atomically claims this time step: a code that already signed someone
+    // in (or one from an earlier step) is rejected even though it's still
+    // inside its validity window.
+    const claimed =
+      matchedEpoch !== null &&
+      (
+        await pool.query(
+          `UPDATE admin_users SET totp_last_used_epoch = $2
+           WHERE id = $1 AND (totp_last_used_epoch IS NULL OR totp_last_used_epoch < $2)`,
+          [admin.id, matchedEpoch],
+        )
+      ).rowCount === 1;
+    if (!claimed) {
       await logAdminAction({
         actorId: admin.id,
         actorUsername: admin.username,
@@ -98,5 +128,5 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
     ip,
   });
 
-  redirect("/admin/leads");
+  redirect(MFA_REQUIRED && !admin.totp_enabled ? "/admin/settings/mfa" : "/admin/leads");
 }

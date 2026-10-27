@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin/session";
 import { listKbDocuments } from "@/lib/elevenlabs/client";
 
 export const metadata = {
@@ -8,6 +9,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminKbPage() {
+  await requireAdminPage();
   let documents: Awaited<ReturnType<typeof listKbDocuments>> = [];
   let loadError: string | null = null;
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin/session";
 import { getKbDocument } from "@/lib/elevenlabs/client";
 import { updateKbDocumentAction, deleteKbDocumentAction } from "../actions";
 
@@ -7,6 +8,7 @@ export const metadata = {
 };
 
 export default async function AdminKbDocumentPage(props: PageProps<"/admin/kb/[documentId]">) {
+  await requireAdminPage();
   const { documentId } = await props.params;
   const doc = await getKbDocument(documentId);
   const isEditableText = doc.type === "text" && typeof doc.text === "string";

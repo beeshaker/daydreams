@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/admin/session";
 import { listLeads, type LeadStatus } from "@/lib/leads/store";
 import { updateLeadAction, purgeExpiredLeadsAction, retryFailedEmailsAction } from "./actions";
 
@@ -15,6 +16,7 @@ function isLeadStatus(value: string | string[] | undefined): value is LeadStatus
 }
 
 export default async function AdminLeadsPage(props: PageProps<"/admin/leads">) {
+  await requireAdminPage();
   const searchParams = await props.searchParams;
   const statusParam = Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status;
   const leadTypeParam = Array.isArray(searchParams.leadType)

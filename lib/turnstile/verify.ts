@@ -4,10 +4,10 @@ const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 /**
  * Verifies a Cloudflare Turnstile token server-side. If
- * TURNSTILE_SECRET_KEY isn't set (e.g. local dev, or before the user has
- * created a Turnstile site), this is a deliberate no-op that returns true
- * so form submission isn't blocked — a warning is logged so this is
- * visible in the server logs rather than silently bypassed forever.
+ * TURNSTILE_SECRET_KEY isn't set in local dev, this is a deliberate no-op
+ * that returns true so form submission isn't blocked (with a warning). In
+ * production a missing key fails closed — a misconfigured deploy rejects
+ * submissions loudly instead of silently dropping bot protection.
  */
 export async function verifyTurnstileToken(
   token: string | undefined,
@@ -15,6 +15,10 @@ export async function verifyTurnstileToken(
 ): Promise<boolean> {
   const secretKey = process.env.TURNSTILE_SECRET_KEY;
   if (!secretKey) {
+    if (process.env.NODE_ENV === "production") {
+      console.error("[turnstile] TURNSTILE_SECRET_KEY not set in production — rejecting submission");
+      return false;
+    }
     console.warn("[turnstile] TURNSTILE_SECRET_KEY not set — skipping bot-protection check");
     return true;
   }
