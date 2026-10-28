@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db/client";
-import { verifyPassword } from "@/lib/admin/passwords";
+import { verifyPasswordOrDummy } from "@/lib/admin/passwords";
 import { matchTotpCode } from "@/lib/admin/totp";
 import { getAdminSession, MFA_REQUIRED } from "@/lib/admin/session";
 import { logAdminAction } from "@/lib/admin/audit";
@@ -73,13 +73,9 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
   );
   const admin = rows[0];
 
-  // Always run a bcrypt compare, even against a dummy hash, so a
-  // nonexistent username doesn't respond measurably faster than a wrong
-  // password — avoids leaking which usernames exist via timing.
-  const passwordOk = await verifyPassword(
-    password,
-    admin?.password_hash ?? "$2a$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidin",
-  );
+  // Always runs a full-cost bcrypt compare, so a nonexistent username
+  // doesn't respond measurably faster than a wrong password.
+  const passwordOk = await verifyPasswordOrDummy(password, admin?.password_hash);
 
   if (!admin || !passwordOk) {
     await logAdminAction({ actorId: null, actorUsername: username, action: "login.failed", ip });

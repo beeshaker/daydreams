@@ -1,11 +1,18 @@
+import type { PoolClient } from "pg";
 import { getDb } from "@/lib/db/client";
+
+/** Transaction-scoped lock on one bucket+identifier; released at COMMIT/ROLLBACK. */
+export async function lockKey(client: PoolClient, bucket: string, identifier: string): Promise<void> {
+  await client.query("SELECT pg_advisory_xact_lock(hashtext($1::text || ':' || $2::text))", [bucket, identifier]);
+}
 
 /**
  * Durable, Postgres-backed rate limiter (replaces the old in-memory
  * per-process limiter, which reset on every restart/deploy and didn't
  * work across multiple instances). Sweep-then-count-then-insert all runs
- * inside one transaction per check so concurrent requests from the same
- * identifier can't race past the limit between the count and the insert.
+ * inside one transaction per check, serialized per bucket+identifier by an
+ * advisory lock — a transaction alone isn't enough under READ COMMITTED: a
+ * burst of parallel requests would all count the same rows and all pass.
  */
 export async function isRateLimited(
   bucket: string,
@@ -17,6 +24,7 @@ export async function isRateLimited(
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
+    await lockKey(client, bucket, identifier);
 
     await client.query(
       `DELETE FROM rate_limit_events

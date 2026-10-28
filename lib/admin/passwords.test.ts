@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { hashPassword, verifyPassword } from "./passwords";
+import { hashPassword, verifyPassword, verifyPasswordOrDummy } from "./passwords";
 
 describe("passwords", () => {
   it("verifies a correct password against its hash", async () => {
@@ -16,5 +16,19 @@ describe("passwords", () => {
     const hashA = await hashPassword("same-password");
     const hashB = await hashPassword("same-password");
     expect(hashA).not.toEqual(hashB);
+  });
+
+  it("takes as long to reject an unknown user as a wrong password", async () => {
+    const realHash = await hashPassword("correct-horse-battery-staple");
+    await verifyPasswordOrDummy("warm-up", undefined); // first call also builds the dummy hash
+
+    const time = async (hash: string | undefined) => {
+      const start = performance.now();
+      expect(await verifyPasswordOrDummy("wrong-password", hash)).toBe(false);
+      return performance.now() - start;
+    };
+    const wrongPassword = await time(realHash);
+    const unknownUser = await time(undefined);
+    expect(unknownUser).toBeGreaterThan(wrongPassword * 0.5);
   });
 });
